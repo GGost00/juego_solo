@@ -15,7 +15,7 @@ SOURCES += \
     jugador.cpp \
     main.cpp \
     mainwindow.cpp \
-    monedas.cpp \
+    moneda.cpp \
     pared.cpp
 
 HEADERS += \
@@ -24,7 +24,7 @@ HEADERS += \
     grafjugador.h \
     jugador.h \
     mainwindow.h \
-    monedas.h \
+    moneda.h \
     pared.h
 
 FORMS += \
