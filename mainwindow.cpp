@@ -18,8 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     timer = new QTimer(this);
     scene = new QGraphicsScene(this);
-    muro1 = new pared(15,100,-980,-400);
-    muro2 = new pared(15,100,-10,-400);
+    muro1 = new pared(3,100,-997,-400);
+    muro2 = new pared(3,100,0,-400);
     scene->setSceneRect(0,0,h_limit,v_limit);
 
     ui->graphicsView->setScene(scene);
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     enemigo->actualizar(v_limit);
 
 
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords3.txt");
     char linea[20];
     Leer.getline(linea, sizeof(linea));
     while (!Leer.eof()) {
@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     Leer.close();
 
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money.txt");
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money3.txt");
     char line[20];
     Leer.getline(line, sizeof(line));
     while (!Leer.eof()) {
@@ -127,12 +127,12 @@ void MainWindow::borderCollision(cuerpo *b)
     if(b->getPY()>v_limit-b->getR()){
         b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),v_limit-b->getR());
     }
-    if(personaje->collidesWithItem(muro1)){
-        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
-    }
-    if(personaje->collidesWithItem(muro2)){
+//    if(personaje->collidesWithItem(muro1)){
+//        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
+//    }
+//    if(personaje->collidesWithItem(muro2)){
 
-    }
+//    }
 }
 void MainWindow::borderCollisionE(enemy *c)
 {
@@ -149,12 +149,12 @@ void MainWindow::borderCollisionE(enemy *c)
     if(c->getPY()>v_limit-c->getR()){
         c->set_vel(c->getVX(),-1*c->getE()*c->getVY(),c->getPX(),v_limit-c->getR());
     }
-    if(personaje->collidesWithItem(muro1)){
-        c->set_vel(-1*c->getE()*c->getVX(),c->getVY(),c->getR(),c->getPY());
-    }
-    if(personaje->collidesWithItem(muro2)){
+//    if(personaje->collidesWithItem(muro1)){
+//        c->set_vel(-1*c->getE()*c->getVX(),c->getVY(),c->getR(),c->getPY());
+//    }
+//    if(personaje->collidesWithItem(muro2)){
 
-    }
+//    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)

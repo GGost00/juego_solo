@@ -10,8 +10,21 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>MV Boli</family>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Calabozo Mediebal</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="recursos.qrc">
+    <normaloff>:/recursos/imagenes/imagen.png</normaloff>:/recursos/imagenes/imagen.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -26,12 +39,14 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>
