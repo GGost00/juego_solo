@@ -130,7 +130,7 @@ void MainWindow::borderCollision(cuerpo *b)
     }
     for(int i=0;i<paredes.size();i++){
         if(personaje->collidesWithItem(paredes.at(i))){
-          b->set_vel(b->getVX(),0,b->getPX(),1+b->getPY());
+          b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
 //    if(personaje->collidesWithItem(muro1)){
 //        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
@@ -201,6 +201,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     if(event->key() == Qt::Key_Space){
         saltos+=1;
+
         for(int i=0;i<monedas.size();i++){
             if(personaje->collidesWithItem(monedas.at(i))){
                 scene->removeItem(monedas.at(i));
@@ -211,6 +212,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             saltos-=4;
         }
         else{
+            l=-1;
             b->set_vel(b->getVX(),40,b->getPX(),b->getPY());
             if(personaje->collidesWithItem(muro1)){
                 b->set_vel(b->getVX(),-10,b->getPX(),b->getPY());
@@ -221,6 +223,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         }
 
     }
+    else{l=1;}
 
 }
 void MainWindow::moveenemy()
