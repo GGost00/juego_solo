@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QKeyEvent>
 #include <iostream>
 #include <fstream>
@@ -34,6 +35,19 @@ public slots:
     void actualizar();
     void moveenemy();
 
+private slots:
+    void on_cargarpartida_clicked();
+
+    void on_nuevapartida_clicked();
+
+    void on_iniciar_clicked();
+
+    void on_registrar_clicked();
+
+    void on_volver_clicked();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
@@ -52,6 +66,7 @@ private:
     pared *muro3;
     pared *muro4;
     QList<cuerpograf *> bars;
+    QGraphicsView * view = new QGraphicsView(this);
     QList<moneda *> eliminarMoneda(QList<moneda *> monedas,int pos);
 };
 #endif // MAINWINDOW_H

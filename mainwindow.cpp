@@ -25,17 +25,30 @@ MainWindow::MainWindow(QWidget *parent)
     muro3 = new pared(3,100,0,-200);
     scene->setSceneRect(0,0,h_limit,v_limit);
 
-    ui->graphicsView->setScene(scene);
+    view->setScene(scene);
     ui->centralwidget->adjustSize();
     scene->addRect(scene->sceneRect());
-    ui->graphicsView->resize(scene->width(),scene->height());
-    this->resize(ui->graphicsView->width()+100,ui->graphicsView->height()+100);
+    view->resize(scene->width(),scene->height());
+    this->resize(view->width(),view->height());
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     personaje = new cuerpograf;
     enemigo =new grafenemigo;
     personaje->actualizar(v_limit);
     enemigo->actualizar(v_limit);
 
+    ui->cargarpartida->show();
+    ui->nuevapartida->show();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->hide();
+    ui->volver->hide();
+    ui->label->hide();
+    ui->label_2->hide();
+    ui->usuario->hide();
+    ui->contrasena->hide();
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
     char linea[20];
@@ -317,4 +330,84 @@ QList<moneda *> MainWindow::eliminarMoneda(QList<moneda *> monedas, int pos)
         }
     }
     return aux;
+}
+
+void MainWindow::on_cargarpartida_clicked()
+{
+    ui->cargarpartida->hide();
+    ui->nuevapartida->hide();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->show();
+    ui->volver->show();
+    ui->label->show();
+    ui->label_2->show();
+    ui->usuario->show();
+    ui->contrasena->show();
+}
+
+void MainWindow::on_nuevapartida_clicked()
+{
+    ui->cargarpartida->hide();
+    ui->nuevapartida->hide();
+    ui->un_jugador->show();
+    ui->dos_jugadores->show();
+    ui->registrar->show();
+    ui->iniciar->hide();
+    ui->volver->show();
+    ui->label->show();
+    ui->label_2->show();
+    ui->usuario->show();
+    ui->contrasena->show();
+}
+
+void MainWindow::on_iniciar_clicked()
+{
+    ui->cargarpartida->show();
+    ui->nuevapartida->show();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->hide();
+    ui->volver->hide();
+    ui->label->hide();
+    ui->label_2->hide();
+    ui->usuario->hide();
+    ui->contrasena->hide();
+}
+
+void MainWindow::on_registrar_clicked()
+{
+    ui->cargarpartida->show();
+    ui->nuevapartida->show();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->hide();
+    ui->volver->hide();
+    ui->label->hide();
+    ui->label_2->hide();
+    ui->usuario->hide();
+    ui->contrasena->hide();
+}
+
+void MainWindow::on_volver_clicked()
+{
+    ui->cargarpartida->show();
+    ui->nuevapartida->show();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->hide();
+    ui->volver->hide();
+    ui->label->hide();
+    ui->label_2->hide();
+    ui->usuario->hide();
+    ui->contrasena->hide();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    this->close();
 }

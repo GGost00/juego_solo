@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>recursos/imagenes/imagen.png</file>
         <file>recursos/imagenes/presentacion.png</file>
+        <file>recursos/imagenes/prese.png</file>
     </qresource>
 </RCC>
