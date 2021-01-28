@@ -4,6 +4,7 @@
 int saltos=0;
 int choques=-1;
 int movi=5;
+int l;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -127,6 +128,10 @@ void MainWindow::borderCollision(cuerpo *b)
     if(b->getPY()>v_limit-b->getR()){
         b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),v_limit-b->getR());
     }
+    for(int i=0;i<paredes.size();i++){
+        if(personaje->collidesWithItem(paredes.at(i))){
+          b->set_vel(b->getVX(),0,b->getPX(),1+b->getPY());
+        }}
 //    if(personaje->collidesWithItem(muro1)){
 //        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
 //    }
@@ -149,6 +154,10 @@ void MainWindow::borderCollisionE(enemy *c)
     if(c->getPY()>v_limit-c->getR()){
         c->set_vel(c->getVX(),-1*c->getE()*c->getVY(),c->getPX(),v_limit-c->getR());
     }
+    for(int i=0;i<paredes.size();i++){
+        if(enemigo->collidesWithItem(paredes.at(i))){
+          c->set_vel(movi,0,c->getPX(),1+c->getPY());
+        }}
 //    if(personaje->collidesWithItem(muro1)){
 //        c->set_vel(-1*c->getE()*c->getVX(),c->getVY(),c->getR(),c->getPY());
 //    }
