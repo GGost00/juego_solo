@@ -25,13 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     muro3 = new pared(3,100,0,-200);
     scene->setSceneRect(0,0,h_limit,v_limit);
 
-    view->setScene(scene);
-    ui->centralwidget->adjustSize();
-    scene->addRect(scene->sceneRect());
-    view->resize(scene->width(),scene->height());
-    this->resize(view->width(),view->height());
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 
     personaje = new cuerpograf;
     enemigo =new grafenemigo;
@@ -49,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label_2->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
+    view->hide();
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
     char linea[20];
@@ -364,8 +359,8 @@ void MainWindow::on_nuevapartida_clicked()
 
 void MainWindow::on_iniciar_clicked()
 {
-    ui->cargarpartida->show();
-    ui->nuevapartida->show();
+    ui->cargarpartida->hide();
+    ui->nuevapartida->hide();
     ui->un_jugador->hide();
     ui->dos_jugadores->hide();
     ui->registrar->hide();
@@ -375,6 +370,16 @@ void MainWindow::on_iniciar_clicked()
     ui->label_2->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
+    ui->label_3->hide();
+    ui->pushButton->hide();
+    view->show();
+    view->setScene(scene);
+    ui->centralwidget->adjustSize();
+    scene->addRect(scene->sceneRect());
+    view->resize(scene->width(),scene->height());
+    this->resize(view->width(),view->height());
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void MainWindow::on_registrar_clicked()
