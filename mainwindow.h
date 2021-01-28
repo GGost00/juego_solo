@@ -49,6 +49,8 @@ private:
     grafenemigo*  enemigo;
     pared *muro1;
     pared *muro2;
+    pared *muro3;
+    pared *muro4;
     QList<cuerpograf *> bars;
     QList<moneda *> eliminarMoneda(QList<moneda *> monedas,int pos);
 };

@@ -3,7 +3,7 @@
 
 int saltos=0;
 int choques=-1;
-int movi=5;
+int movi=-5;
 int l;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     scene = new QGraphicsScene(this);
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
+    muro4 = new pared(3,100,-997,-200);
+    muro3 = new pared(3,100,0,-200);
     scene->setSceneRect(0,0,h_limit,v_limit);
 
     ui->graphicsView->setScene(scene);
@@ -35,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     enemigo->actualizar(v_limit);
 
 
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords3.txt");
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
     char linea[20];
     Leer.getline(linea, sizeof(linea));
     while (!Leer.eof()) {
@@ -64,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     Leer.close();
 
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money3.txt");
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money.txt");
     char line[20];
     Leer.getline(line, sizeof(line));
     while (!Leer.eof()) {
@@ -87,6 +89,8 @@ MainWindow::MainWindow(QWidget *parent)
     Leer.close();
     scene->addItem(muro1);
     scene->addItem(muro2);
+    scene->addItem(muro3);
+    scene->addItem(muro4);
     scene->addItem(personaje);
     scene->addItem(enemigo);
 
@@ -248,6 +252,12 @@ void MainWindow::moveenemy()
     //        }
     //    }
     c->set_vel(movi,c->getVY(),c->getPX(),c->getPY());
+    if(enemigo->collidesWithItem(muro4)){
+      c->set_vel(movi,c->getVY(),25,c->getPY());
+    }
+    if(enemigo->collidesWithItem(muro3)){
+      c->set_vel(movi,c->getVY(),975,c->getPY());
+    }
     if(enemigo->collidesWithItem(muro2)){
         choques+=1;
         if(choques%2==0 && choques!=0){
