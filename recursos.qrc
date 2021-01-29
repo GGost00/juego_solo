@@ -3,5 +3,6 @@
         <file>recursos/imagenes/imagen.png</file>
         <file>recursos/imagenes/presentacion.png</file>
         <file>recursos/imagenes/prese.png</file>
+        <file>recursos/imagenes/fondo.jpg.png</file>
     </qresource>
 </RCC>

@@ -211,7 +211,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
         }
     }
-    if(event->key() == Qt::Key_Space){
+    if(event->key() == Qt::Key_W){
         saltos+=1;
 
         for(int i=0;i<monedas.size();i++){
@@ -369,6 +369,7 @@ void MainWindow::on_iniciar_clicked()
     ui->label->hide();
     ui->label_2->hide();
     ui->usuario->hide();
+    ui->label_4->hide();
     ui->contrasena->hide();
     ui->label_3->hide();
     ui->pushButton->hide();
