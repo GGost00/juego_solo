@@ -50,11 +50,15 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_actionGuardar_triggered();
+    void on_eliminar_clicked();
 
-    void on_actionPause_triggered();
+    void on_reiniciar_clicked();
 
-    void on_actionPlay_triggered();
+    void on_Play_clicked();
+
+    void on_Pausa_clicked();
+
+    void on_Guardar_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -64,6 +68,7 @@ private:
     float dt;
     int h_limit;
     int v_limit;
+    void borderCollision2(cuerpo *b,cuerpo *d);
     void borderCollision(cuerpo *b);
     void borderCollisionE(enemy *b);
     void keyPressEvent(QKeyEvent *event);
@@ -75,6 +80,7 @@ private:
     cuerpograf * personaje;
     cuerpograf * personaje2;
     grafenemigo*  enemigo;
+    QString rutas= "../juego_solitario/partidas/";
     pared *muro1;
     pared *muro2;
     pared *muro3;

@@ -1,13 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-int saltos=0;
 int choques=-1;
 int movi=-5;
-int l;
+int saltos=0;
+int l,L;
 int nivel=0;
 int num_jugadores;
-QString user,contra;
+QString user,contra,posiciones;
 int puntaje=0;
 int pn=0;
 int vidas=5;
@@ -21,10 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cargarpartida->show();
     ui->nuevapartida->show();
     ui->un_jugador->hide();
+    ui->buton->hide();
     ui->dos_jugadores->hide();
     ui->registrar->hide();
     ui->iniciar->hide();
     ui->volver->hide();
+    ui->buton->setChecked(true);
     ui->label->hide();
     ui->label_2->hide();
     ui->label_5->hide();
@@ -33,6 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Vida->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
+    ui->Guardar->hide();
+    ui->Pausa->hide();
+    ui->Play->hide();
+    ui->eliminar->hide();
+    ui->reiniciar->hide();
     view->hide();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vidas));
@@ -52,10 +58,58 @@ void MainWindow::actualizar()
         borderCollisionE(enemigo->getEsf());
         personaje->actualizar(v_limit);
         borderCollision(personaje->getEsf());
-        personaje2->actualizar(v_limit);
-        borderCollision(personaje2->getEsf());
+        if(num_jugadores==2){
+            personaje2->actualizar(v_limit);
+            borderCollision2(personaje->getEsf(),personaje2->getEsf());
+}
 
 
+}
+
+void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
+{
+    if(b->getPX()<b->getR()){
+        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
+
+    }
+    if(b->getPX()>h_limit-b->getR()){
+        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),h_limit-b->getR(),b->getPY());
+    }
+    if(b->getPY()<b->getR()){
+        b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getR());
+    }
+    if(b->getPY()>v_limit-b->getR()){
+        b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),v_limit-b->getR());
+    }
+    for(int i=0;i<paredes.size();i++){
+        if(personaje->collidesWithItem(paredes.at(i))){
+          b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
+        }}
+    if(num_jugadores==2){
+        if(d->getPX()<d->getR()){
+            d->set_vel(-1*d->getE()*d->getVX(),d->getVY(),d->getR(),d->getPY());
+
+        }
+        if(d->getPX()>h_limit-d->getR()){
+            d->set_vel(-1*d->getE()*d->getVX(),d->getVY(),h_limit-d->getR(),d->getPY());
+        }
+        if(d->getPY()<d->getR()){
+            d->set_vel(d->getVX(),-1*d->getE()*d->getVY(),d->getPX(),d->getR());
+        }
+        if(d->getPY()>v_limit-d->getR()){
+            d->set_vel(d->getVX(),-1*d->getE()*d->getVY(),d->getPX(),v_limit-d->getR());
+        }
+        for(int i=0;i<paredes.size();i++){
+            if(personaje2->collidesWithItem(paredes.at(i))){
+              d->set_vel(d->getVX(),0,d->getPX(),L+d->getPY());
+            }}
+    }
+//    if(personaje->collidesWithItem(muro1)){
+//        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
+//    }
+//    if(personaje->collidesWithItem(muro2)){
+
+    //    }
 }
 
 void MainWindow::borderCollision(cuerpo *b)
@@ -77,12 +131,6 @@ void MainWindow::borderCollision(cuerpo *b)
         if(personaje->collidesWithItem(paredes.at(i))){
           b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
-//    if(personaje->collidesWithItem(muro1)){
-//        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
-//    }
-//    if(personaje->collidesWithItem(muro2)){
-
-//    }
 }
 void MainWindow::borderCollisionE(enemy *c)
 {
@@ -114,7 +162,7 @@ void MainWindow::borderCollisionE(enemy *c)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     cuerpo * b = personaje->getEsf();
-    cuerpo * d = personaje2->getEsf();
+
     if(event->key() == Qt::Key_D){
         b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
         for(int i=0;i<monedas.size();i++){
@@ -233,6 +281,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
     }
     if (num_jugadores==2){
+        cuerpo * d = personaje2->getEsf();
         if(event->key() == Qt::Key_K){
             d->set_vel(10,d->getVY(),d->getPX(),d->getPY());
             for(int i=0;i<monedas.size();i++){
@@ -339,7 +388,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 saltos-=4;
             }
             else{
-                l=-1;
+                L=-1;
                 d->set_vel(d->getVX(),40,d->getPX(),d->getPY());
                 if(personaje2->collidesWithItem(muro1)){
                     d->set_vel(d->getVX(),-10,d->getPX(),d->getPY());
@@ -350,9 +399,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }
 
         }
-        else{l=1;}
+        if(event->key() != Qt::Key_W && event->key() != Qt::Key_U){
+            L=1;
+        }
     }
-else{l=1;}
+if(event->key() != Qt::Key_W && event->key() != Qt::Key_U){
+    l=1;
+}
 }
 
 void MainWindow::level1()
@@ -378,6 +431,11 @@ void MainWindow::level1()
     ui->label_6->show();
     ui->Puntaje->show();
     ui->Vida->show();
+    ui->Guardar->show();
+    ui->Pausa->show();
+    ui->Play->show();
+    ui->eliminar->show();
+    ui->reiniciar->show();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vidas));
     ifstream Leer;
@@ -398,7 +456,7 @@ void MainWindow::level1()
     view->setScene(scene);
     ui->centralwidget->adjustSize();
     scene->addRect(scene->sceneRect());
-    view->resize(scene->width(),scene->height());
+    view->resize(scene->width(),150+scene->height());
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -508,7 +566,7 @@ void MainWindow::level2()
     view->setScene(scene);
     ui->centralwidget->adjustSize();
     scene->addRect(scene->sceneRect());
-    view->resize(scene->width(),scene->height());
+    view->resize(scene->width(),150+scene->height());
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -621,7 +679,7 @@ void MainWindow::level3()
     view->setScene(scene);
     ui->centralwidget->adjustSize();
     scene->addRect(scene->sceneRect());
-    view->resize(scene->width(),scene->height());
+    view->resize(scene->width(),150+scene->height());
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -699,6 +757,8 @@ void MainWindow::destructorlevel1()
 {
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
+    for(int i=0;i<monedas.size();i++){
+        monedas.removeAt(i);}
 }
 
 void MainWindow::crear_jugador()
@@ -712,20 +772,7 @@ void MainWindow::crear_jugador()
         scene->addItem(personaje2);
     }
 }
-void MainWindow::on_actionGuardar_triggered()
-{
-    cuerpo *b =personaje->getEsf();
-    puntaje+=pn;
-    pn=0;
-    ui->Puntaje->setText(QString::number(pn));
-    ifstream pp;
-    pp.open("../juego_solitario/Guardar.txt",ios::app);
-    pp.close();
-   ofstream guardar_;
-   guardar_.open("../juego_solitario/Guardar.txt",ios::app);
-   guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<b->getPX()<<","<<b->getPY()<<endl;
-   guardar_.close();
-}
+
 
 void MainWindow::moveenemy()
 {
@@ -871,38 +918,58 @@ void MainWindow::on_iniciar_clicked()
 
 void MainWindow::on_registrar_clicked()
 {
-    ui->cargarpartida->hide();
-    ui->nuevapartida->hide();
-    ui->un_jugador->hide();
-    ui->dos_jugadores->hide();
-    ui->registrar->hide();
-    ui->iniciar->hide();
-    ui->volver->hide();
-    ui->label->hide();
-    ui->label_2->hide();
-    ui->usuario->hide();
-    ui->label_4->hide();
-    ui->contrasena->hide();
-    ui->label_3->hide();
-    ui->pushButton->hide();
+string ruta ="hola";
+user=ui->usuario->text();
+contra=ui->contrasena->text();
 
-    if(ui->un_jugador->isChecked())
-        num_jugadores = 1;
-    else if(ui->dos_jugadores->isChecked())
-        num_jugadores = 2;
-    user=ui->usuario->text();
-    contra=ui->contrasena->text();
-    puntaje+=pn;
-    pn=0;
-    ui->Puntaje->setText(QString::number(pn));
-    ifstream pp;
-    pp.open("../juego_solitario/Guardar.txt",ios::app);
-    pp.close();
-   ofstream guardar_;
-   guardar_.open("../juego_solitario/Guardar.txt",ios::app);
-   guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<"."<<endl;
-   guardar_.close();
-   level1();
+    if(user==NULL || contra==NULL || ui->buton->isChecked() ){
+        //En el caso de que el usuario no haya ingresado nada simplemente se le indicara que es un ingreso invalido
+        QMessageBox msgBox;
+        msgBox.setText("Registro Invalido.");
+        msgBox.setWindowTitle("Calabozo Medieval");
+        msgBox.setWindowIcon(QIcon(":/recursos/imagenes/imagen.png"));
+        msgBox.setStyleSheet("background-color:#211b18;"
+                             "color:white;");
+        msgBox.exec();
+        ui->usuario->clear();
+        ui->contrasena->clear();
+        ui->buton->setChecked(true);
+
+
+    }else{
+        ui->cargarpartida->hide();
+        ui->nuevapartida->hide();
+        ui->un_jugador->hide();
+        ui->dos_jugadores->hide();
+        ui->registrar->hide();
+        ui->iniciar->hide();
+        ui->volver->hide();
+        ui->label->hide();
+        ui->label_2->hide();
+        ui->usuario->hide();
+        ui->label_4->hide();
+        ui->contrasena->hide();
+        ui->label_3->hide();
+        ui->pushButton->hide();
+
+        if(ui->un_jugador->isChecked())
+            num_jugadores = 1;
+        else if(ui->dos_jugadores->isChecked())
+            num_jugadores = 2;
+
+        puntaje+=pn;
+        pn=0;
+        ui->Puntaje->setText(QString::number(pn));
+        ifstream pp;
+        pp.open("../juego_solitario/partidas/Guardar.txt",ios::app);
+        pp.close();
+       ofstream guardar_;
+       guardar_.open("../juego_solitario/partidas/Guardar.txt",ios::app);
+       guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<"."<<endl;
+       guardar_.close();
+       level1();
+    }
+
 }
 
 void MainWindow::on_volver_clicked()
@@ -918,6 +985,7 @@ void MainWindow::on_volver_clicked()
     ui->label_2->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
+
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -925,17 +993,65 @@ void MainWindow::on_pushButton_clicked()
     this->close();
 }
 
+void MainWindow::on_eliminar_clicked()
+{
 
+}
 
+void MainWindow::on_reiniciar_clicked()
+{
+    switch (nivel) {
+    case 1:
+        destructorlevel1();
+        level1();
+        break;
+    case 2:
+        destructorlevel1();
+        level2();
+        break;
+    case 3:
+        destructorlevel1();
+        level3();
+        break;
 
-void MainWindow::on_actionPause_triggered()
+    }
+}
+
+void MainWindow::on_Play_clicked()
+{
+    timer->start(3);
+    timere->start(3);
+}
+
+void MainWindow::on_Pausa_clicked()
 {
     timer->stop();
     timere->stop();
 }
 
-void MainWindow::on_actionPlay_triggered()
+void MainWindow::on_Guardar_clicked()
 {
-    timer->start(3);
-    timere->start(3);
+    cuerpo *b =personaje->getEsf();
+    puntaje+=pn;
+    pn=0;
+    for(int i=0;i<monedas.size();i++){
+        posiciones+=monedas.at(i)->getPosx();
+        posiciones+=",";
+        posiciones+=monedas.at(i)->getPosy();
+        posiciones+="\n";
+
+    }
+    ui->Puntaje->setText(QString::number(pn));
+    ifstream pp;
+    pp.open("../juego_solitario/partida.txt",ios::app);
+    pp.close();
+    ofstream guardar_;
+    guardar_.open("../juego_solitario/Guardar.txt",ios::app);
+    guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<b->getPX()<<","<<b->getPY()<<endl;
+    guardar_.close();
+    ofstream partida;
+    partida.open("../juego_solitario/partida.txt",ios::app);
+    partida<<posiciones.toStdString();
+    partida.close();
+
 }
