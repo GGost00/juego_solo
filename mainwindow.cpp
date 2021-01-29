@@ -5,32 +5,13 @@ int saltos=0;
 int choques=-1;
 int movi=-5;
 int l;
+int nivel=0;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     srand(time(NULL));
     ui->setupUi(this);
-    ifstream Leer;
-    int ancho1,alto1,posix,posiy,posjx,posjy;
-
-    h_limit = 1000;
-    v_limit = 500;
-
-    timer = new QTimer(this);
-    scene = new QGraphicsScene(this);
-    muro1 = new pared(3,100,-997,-400);
-    muro2 = new pared(3,100,0,-400);
-    muro4 = new pared(3,100,-997,-200);
-    muro3 = new pared(3,100,0,-200);
-    scene->setSceneRect(0,0,h_limit,v_limit);
-
-
-
-    personaje = new cuerpograf;
-    enemigo =new grafenemigo;
-    personaje->actualizar(v_limit);
-    enemigo->actualizar(v_limit);
 
     ui->cargarpartida->show();
     ui->nuevapartida->show();
@@ -45,68 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->contrasena->hide();
     view->hide();
 
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
-    char linea[20];
-    Leer.getline(linea, sizeof(linea));
-    while (!Leer.eof()) {
-        for(int i=0; i<4;i++){
-            char *puntero;
-            if(i==0){
-                puntero = strtok(linea, ",");
-                ancho1 = atoi(puntero);
-            }
-            if(i==1){
-                puntero = strtok(NULL, ",");
-                alto1 = atoi(puntero);
-            }
-            if(i==2){
-                puntero = strtok(NULL, ",");
-                posix = atoi(puntero);
-            }
-            if(i==3){
-                puntero = strtok(NULL, ",");
-                posiy = atoi(puntero);
-            }
-        }
-        paredes.push_back(new pared (ancho1,alto1,posix,posiy));
-        scene->addItem(paredes.back());
-        Leer.getline(linea, sizeof(linea));
-    }
-    Leer.close();
 
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money.txt");
-    char line[20];
-    Leer.getline(line, sizeof(line));
-    while (!Leer.eof()) {
-        for(int i=0; i<2;i++){
-            char *puntero;
-            if(i==0){
-                puntero = strtok(line, ",");
-                posjx = atoi(puntero);
-            }
-            if(i==1){
-                puntero = strtok(NULL, ",");
-                posjy = atoi(puntero);
-            }
-        }
-        monedas.push_back(new moneda (posjx,posjy));
-
-        scene->addItem(monedas.back());
-        Leer.getline(line, sizeof(line));
-    }
-    Leer.close();
-    scene->addItem(muro1);
-    scene->addItem(muro2);
-    scene->addItem(muro3);
-    scene->addItem(muro4);
-    scene->addItem(personaje);
-    scene->addItem(enemigo);
-
-    connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
-    timer->start(3);
-    timere = new QTimer();
-    connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
-    timere->start(3);
 }
 
 MainWindow::~MainWindow()
@@ -189,6 +109,24 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 monedas= eliminarMoneda(monedas,i);
             }
         }
+        if(monedas.size()==NULL && nivel==1){
+            destructorlevel1();
+            nivel+=1;
+            level2();
+        }
+        if(monedas.size()==NULL && nivel==2){
+            destructorlevel1();
+            nivel+=1;
+            level3();
+        }
+        if(monedas.size()==NULL && nivel==3){
+            timere->stop();
+             timer->stop();
+            QString txt;
+            txt="Felicidades has recuperado el tesoro";
+            QMessageBox::about(this,"¡FELICIDADES!",txt);
+
+        }
         if(personaje->collidesWithItem(muro1)){
             b->set_vel(-10,b->getVY(),b->getPX(),b->getPY());
         }
@@ -203,6 +141,24 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 scene->removeItem(monedas.at(i));
                 monedas= eliminarMoneda(monedas,i);
             }
+        }
+        if(monedas.size()==NULL && nivel==1){
+            destructorlevel1();
+            nivel+=1;
+            level2();
+        }
+        if(monedas.size()==NULL && nivel==2){
+            destructorlevel1();
+            nivel+=1;
+            level3();
+        }
+        if(monedas.size()==NULL && nivel==3){
+            timere->stop();
+            timer->stop();
+            QString txt;
+            txt="Felicidades has recuperado el tesoro";
+            QMessageBox::about(this,"¡FELICIDADES!",txt);
+
         }
         if(personaje->collidesWithItem(muro1)){
             b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
@@ -219,6 +175,24 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 scene->removeItem(monedas.at(i));
                 monedas= eliminarMoneda(monedas,i);
             }
+        }
+        if(monedas.size()==NULL && nivel==1){
+            destructorlevel1();
+            nivel+=1;
+            level2();
+        }
+        if(monedas.size()==NULL && nivel==2){
+            destructorlevel1();
+            nivel+=1;
+            level3();
+        }
+        if(monedas.size()==NULL && nivel==3){
+            timere->stop();
+            timer->stop();
+            QString txt;
+            txt="Felicidades has recuperado el tesoro";
+            QMessageBox::about(this,"¡FELICIDADES!",txt);
+
         }
         if(saltos%4==0){
             saltos-=4;
@@ -237,6 +211,347 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     else{l=1;}
 
+}
+
+void MainWindow::level1()
+{
+    ui->setupUi(this);
+    nivel=1;
+    ui->cargarpartida->hide();
+    ui->nuevapartida->hide();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->hide();
+    ui->volver->hide();
+    ui->label->hide();
+    ui->label_2->hide();
+    ui->usuario->hide();
+    ui->label_4->hide();
+    ui->contrasena->hide();
+    ui->label_3->hide();
+    ui->pushButton->hide();
+    ifstream Leer;
+    int ancho1,alto1,posix,posiy,posjx,posjy;
+
+    h_limit = 1000;
+    v_limit = 500;
+
+    timer = new QTimer(this);
+    scene = new QGraphicsScene(this);
+    muro1 = new pared(3,100,-997,-400);
+    muro2 = new pared(3,100,0,-400);
+    muro4 = new pared(3,100,-997,-200);
+    muro3 = new pared(3,100,0,-200);
+    scene->setSceneRect(0,0,h_limit,v_limit);
+
+    view->show();
+    view->setScene(scene);
+    ui->centralwidget->adjustSize();
+    scene->addRect(scene->sceneRect());
+    view->resize(scene->width(),scene->height());
+    this->resize(view->width(),view->height());
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    personaje = new cuerpograf;
+    enemigo =new grafenemigo;
+    personaje->actualizar(v_limit);
+    enemigo->actualizar(v_limit);
+
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
+    char linea[20];
+    Leer.getline(linea, sizeof(linea));
+    while (!Leer.eof()) {
+        for(int i=0; i<4;i++){
+            char *puntero;
+            if(i==0){
+                puntero = strtok(linea, ",");
+                ancho1 = atoi(puntero);
+            }
+            if(i==1){
+                puntero = strtok(NULL, ",");
+                alto1 = atoi(puntero);
+            }
+            if(i==2){
+                puntero = strtok(NULL, ",");
+                posix = atoi(puntero);
+            }
+            if(i==3){
+                puntero = strtok(NULL, ",");
+                posiy = atoi(puntero);
+            }
+        }
+        paredes.push_back(new pared (ancho1,alto1,posix,posiy));
+        scene->addItem(paredes.back());
+        Leer.getline(linea, sizeof(linea));
+    }
+    Leer.close();
+
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money.txt");
+    char line[20];
+    Leer.getline(line, sizeof(line));
+    while (!Leer.eof()) {
+        for(int i=0; i<2;i++){
+            char *puntero;
+            if(i==0){
+                puntero = strtok(line, ",");
+                posjx = atoi(puntero);
+            }
+            if(i==1){
+                puntero = strtok(NULL, ",");
+                posjy = atoi(puntero);
+            }
+        }
+        monedas.push_back(new moneda (posjx,posjy));
+
+        scene->addItem(monedas.back());
+        Leer.getline(line, sizeof(line));
+    }
+    Leer.close();
+    scene->addItem(muro1);
+    scene->addItem(muro2);
+    scene->addItem(muro3);
+    scene->addItem(muro4);
+    scene->addItem(personaje);
+    scene->addItem(enemigo);
+
+    connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
+    timer->start(3);
+    timere = new QTimer();
+    connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
+    timere->start(3);
+}
+
+void MainWindow::level2()
+{
+    ui->setupUi(this);
+
+    ui->cargarpartida->hide();
+    ui->nuevapartida->hide();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->hide();
+    ui->volver->hide();
+    ui->label->hide();
+    ui->label_2->hide();
+    ui->usuario->hide();
+    ui->label_4->hide();
+    ui->contrasena->hide();
+    ui->label_3->hide();
+    ui->pushButton->hide();
+    ifstream Leer;
+    int ancho1,alto1,posix,posiy,posjx,posjy;
+
+    h_limit = 1000;
+    v_limit = 500;
+
+    timer = new QTimer(this);
+    scene = new QGraphicsScene(this);
+    muro1 = new pared(3,100,-997,-400);
+    muro2 = new pared(3,100,0,-400);
+    muro4 = new pared(3,100,-997,-200);
+    muro3 = new pared(3,100,0,-200);
+    scene->setSceneRect(0,0,h_limit,v_limit);
+
+    view->show();
+    view->setScene(scene);
+    ui->centralwidget->adjustSize();
+    scene->addRect(scene->sceneRect());
+    view->resize(scene->width(),scene->height());
+    this->resize(view->width(),view->height());
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    personaje = new cuerpograf;
+    enemigo =new grafenemigo;
+    personaje->actualizar(v_limit);
+    enemigo->actualizar(v_limit);
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
+    for(int i=0;i<paredes.size();i++){
+            paredes.removeAt(i);}
+
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords2.txt");
+    char linea[20];
+    Leer.getline(linea, sizeof(linea));
+    while (!Leer.eof()) {
+        for(int i=0; i<4;i++){
+            char *puntero;
+            if(i==0){
+                puntero = strtok(linea, ",");
+                ancho1 = atoi(puntero);
+            }
+            if(i==1){
+                puntero = strtok(NULL, ",");
+                alto1 = atoi(puntero);
+            }
+            if(i==2){
+                puntero = strtok(NULL, ",");
+                posix = atoi(puntero);
+            }
+            if(i==3){
+                puntero = strtok(NULL, ",");
+                posiy = atoi(puntero);
+            }
+        }
+        paredes.push_back(new pared (ancho1,alto1,posix,posiy));
+        scene->addItem(paredes.back());
+        Leer.getline(linea, sizeof(linea));
+    }
+    Leer.close();
+
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money2.txt");
+    char line[20];
+    Leer.getline(line, sizeof(line));
+    while (!Leer.eof()) {
+        for(int i=0; i<2;i++){
+            char *puntero;
+            if(i==0){
+                puntero = strtok(line, ",");
+                posjx = atoi(puntero);
+            }
+            if(i==1){
+                puntero = strtok(NULL, ",");
+                posjy = atoi(puntero);
+            }
+        }
+        monedas.push_back(new moneda (posjx,posjy));
+
+        scene->addItem(monedas.back());
+        Leer.getline(line, sizeof(line));
+    }
+    Leer.close();
+    scene->addItem(muro1);
+    scene->addItem(muro2);
+    scene->addItem(muro3);
+    scene->addItem(muro4);
+    scene->addItem(personaje);
+    scene->addItem(enemigo);
+
+    connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
+
+    connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
+
+}
+
+void MainWindow::level3()
+{
+    ui->setupUi(this);
+
+    ui->cargarpartida->hide();
+    ui->nuevapartida->hide();
+    ui->un_jugador->hide();
+    ui->dos_jugadores->hide();
+    ui->registrar->hide();
+    ui->iniciar->hide();
+    ui->volver->hide();
+    ui->label->hide();
+    ui->label_2->hide();
+    ui->usuario->hide();
+    ui->label_4->hide();
+    ui->contrasena->hide();
+    ui->label_3->hide();
+    ui->pushButton->hide();
+    ifstream Leer;
+    int ancho1,alto1,posix,posiy,posjx,posjy;
+
+    h_limit = 1000;
+    v_limit = 500;
+
+    timer = new QTimer(this);
+    scene = new QGraphicsScene(this);
+    muro1 = new pared(3,100,-997,-400);
+    muro2 = new pared(3,100,0,-400);
+    muro4 = new pared(3,100,-997,-200);
+    muro3 = new pared(3,100,0,-200);
+    scene->setSceneRect(0,0,h_limit,v_limit);
+
+    view->show();
+    view->setScene(scene);
+    ui->centralwidget->adjustSize();
+    scene->addRect(scene->sceneRect());
+    view->resize(scene->width(),scene->height());
+    this->resize(view->width(),view->height());
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    personaje = new cuerpograf;
+    enemigo =new grafenemigo;
+    personaje->actualizar(v_limit);
+    enemigo->actualizar(v_limit);
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
+
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords3.txt");
+    char linea[20];
+    Leer.getline(linea, sizeof(linea));
+    while (!Leer.eof()) {
+        for(int i=0; i<4;i++){
+            char *puntero;
+            if(i==0){
+                puntero = strtok(linea, ",");
+                ancho1 = atoi(puntero);
+            }
+            if(i==1){
+                puntero = strtok(NULL, ",");
+                alto1 = atoi(puntero);
+            }
+            if(i==2){
+                puntero = strtok(NULL, ",");
+                posix = atoi(puntero);
+            }
+            if(i==3){
+                puntero = strtok(NULL, ",");
+                posiy = atoi(puntero);
+            }
+        }
+        paredes.push_back(new pared (ancho1,alto1,posix,posiy));
+        scene->addItem(paredes.back());
+        Leer.getline(linea, sizeof(linea));
+    }
+    Leer.close();
+
+    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money3.txt");
+    char line[20];
+    Leer.getline(line, sizeof(line));
+    while (!Leer.eof()) {
+        for(int i=0; i<2;i++){
+            char *puntero;
+            if(i==0){
+                puntero = strtok(line, ",");
+                posjx = atoi(puntero);
+            }
+            if(i==1){
+                puntero = strtok(NULL, ",");
+                posjy = atoi(puntero);
+            }
+        }
+        monedas.push_back(new moneda (posjx,posjy));
+
+        scene->addItem(monedas.back());
+        Leer.getline(line, sizeof(line));
+    }
+    Leer.close();
+    scene->addItem(muro1);
+    scene->addItem(muro2);
+    scene->addItem(muro3);
+    scene->addItem(muro4);
+    scene->addItem(personaje);
+    scene->addItem(enemigo);
+
+    connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
+    connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
+
+}
+
+void MainWindow::destructorlevel1()
+{
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
 }
 void MainWindow::moveenemy()
 {
@@ -340,6 +655,7 @@ void MainWindow::on_cargarpartida_clicked()
     ui->label_2->show();
     ui->usuario->show();
     ui->contrasena->show();
+
 }
 
 void MainWindow::on_nuevapartida_clicked()
@@ -373,14 +689,8 @@ void MainWindow::on_iniciar_clicked()
     ui->contrasena->hide();
     ui->label_3->hide();
     ui->pushButton->hide();
-    view->show();
-    view->setScene(scene);
-    ui->centralwidget->adjustSize();
-    scene->addRect(scene->sceneRect());
-    view->resize(scene->width(),scene->height());
-    this->resize(view->width(),view->height());
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    level1();
+
 }
 
 void MainWindow::on_registrar_clicked()

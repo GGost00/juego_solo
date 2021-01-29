@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include<QDesktopWidget>
+#include <QMessageBox>
 #include <QKeyEvent>
 #include <iostream>
 #include <fstream>
@@ -59,6 +61,11 @@ private:
     void borderCollision(cuerpo *b);
     void borderCollisionE(enemy *b);
     void keyPressEvent(QKeyEvent *event);
+    void level1();
+    void level2();
+    void level3();
+    void destructorlevel1();
+    void destructorlevel2();
     cuerpograf * personaje;
     grafenemigo*  enemigo;
     pared *muro1;
@@ -67,6 +74,8 @@ private:
     pared *muro4;
     QList<cuerpograf *> bars;
     QGraphicsView * view = new QGraphicsView(this);
+    QGraphicsView * view2 = new QGraphicsView(this);
+    QGraphicsView * view3 = new QGraphicsView(this);
     QList<moneda *> eliminarMoneda(QList<moneda *> monedas,int pos);
 };
 #endif // MAINWINDOW_H

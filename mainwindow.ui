@@ -26,7 +26,7 @@
    <string>Calabozo Mediebal</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="recursos.qrc">
     <normaloff>:/recursos/imagenes/imagen.png</normaloff>:/recursos/imagenes/imagen.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -191,7 +191,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>:/recursos/imagenes/prese.png</pixmap>
+     <pixmap resource="recursos.qrc">:/recursos/imagenes/prese.png</pixmap>
     </property>
    </widget>
    <widget class="QPushButton" name="volver">
@@ -233,7 +233,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>:/recursos/imagenes/fondo.jpg.png</pixmap>
+     <pixmap resource="recursos.qrc">:/recursos/imagenes/fondo.jpg.png</pixmap>
     </property>
    </widget>
    <zorder>label_4</zorder>
@@ -276,8 +276,8 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionControles">
    <property name="icon">
-    <iconset>
-     <normaloff>recursos/imagenes/728948-64.png</normaloff>recursos/imagenes/728948-64.png</iconset>
+    <iconset resource="recursos.qrc">
+     <normaloff>:/recursos/imagenes/728948-64.png</normaloff>:/recursos/imagenes/728948-64.png</iconset>
    </property>
    <property name="text">
     <string>Controles</string>
@@ -285,8 +285,8 @@
   </action>
   <action name="actionInstrucciones">
    <property name="icon">
-    <iconset>
-     <normaloff>recursos/imagenes/iconfinder_info-outline2_4172175.png</normaloff>recursos/imagenes/iconfinder_info-outline2_4172175.png</iconset>
+    <iconset resource="recursos.qrc">
+     <normaloff>:/recursos/imagenes/iconfinder_info-outline2_4172175.png</normaloff>:/recursos/imagenes/iconfinder_info-outline2_4172175.png</iconset>
    </property>
    <property name="text">
     <string>Instrucciones</string>
@@ -294,8 +294,8 @@
   </action>
   <action name="actionPlay">
    <property name="icon">
-    <iconset>
-     <normaloff>recursos/imagenes/352073-64.png</normaloff>recursos/imagenes/352073-64.png</iconset>
+    <iconset resource="recursos.qrc">
+     <normaloff>:/recursos/imagenes/352073-64.png</normaloff>:/recursos/imagenes/352073-64.png</iconset>
    </property>
    <property name="text">
     <string>Play</string>
@@ -303,8 +303,8 @@
   </action>
   <action name="actionPause">
    <property name="icon">
-    <iconset>
-     <normaloff>recursos/imagenes/352582-64.png</normaloff>recursos/imagenes/352582-64.png</iconset>
+    <iconset resource="recursos.qrc">
+     <normaloff>:/recursos/imagenes/352582-64.png</normaloff>:/recursos/imagenes/352582-64.png</iconset>
    </property>
    <property name="text">
     <string>Pause</string>
@@ -312,8 +312,8 @@
   </action>
   <action name="actionGuardar">
    <property name="icon">
-    <iconset>
-     <normaloff>recursos/imagenes/2931171-64.png</normaloff>recursos/imagenes/2931171-64.png</iconset>
+    <iconset resource="recursos.qrc">
+     <normaloff>:/recursos/imagenes/2931171-64.png</normaloff>:/recursos/imagenes/2931171-64.png</iconset>
    </property>
    <property name="text">
     <string>Guardar</string>
@@ -321,14 +321,16 @@
   </action>
   <action name="actionReiniciar">
    <property name="icon">
-    <iconset>
-     <normaloff>recursos/imagenes/4213447-64.png</normaloff>recursos/imagenes/4213447-64.png</iconset>
+    <iconset resource="recursos.qrc">
+     <normaloff>:/recursos/imagenes/4213447-64.png</normaloff>:/recursos/imagenes/4213447-64.png</iconset>
    </property>
    <property name="text">
     <string>Reiniciar</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>
