@@ -52,6 +52,10 @@ private slots:
 
     void on_actionGuardar_triggered();
 
+    void on_actionPause_triggered();
+
+    void on_actionPlay_triggered();
+
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
@@ -67,9 +71,9 @@ private:
     void level2();
     void level3();
     void destructorlevel1();
-    void destructorlevel2();
-    void guardar();
+    void crear_jugador();
     cuerpograf * personaje;
+    cuerpograf * personaje2;
     grafenemigo*  enemigo;
     pared *muro1;
     pared *muro2;
@@ -77,8 +81,6 @@ private:
     pared *muro4;
     QList<cuerpograf *> bars;
     QGraphicsView * view = new QGraphicsView(this);
-    QGraphicsView * view2 = new QGraphicsView(this);
-    QGraphicsView * view3 = new QGraphicsView(this);
     QList<moneda *> eliminarMoneda(QList<moneda *> monedas,int pos);
 };
 #endif // MAINWINDOW_H

@@ -2,8 +2,8 @@
 grafenemigo::grafenemigo():escala(1)
 {
     float posx,posy,velx,vely,mass,r,K,e;
-    posx = 800;
-    posy = 150;
+    posx = 975;
+    posy = 460;
     r = 20;
     mass = 50;
     velx = 0;

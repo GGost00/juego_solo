@@ -9,6 +9,7 @@ int nivel=0;
 int num_jugadores;
 QString user,contra;
 int puntaje=0;
+int pn=0;
 int vidas=5;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,10 +27,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->volver->hide();
     ui->label->hide();
     ui->label_2->hide();
+    ui->label_5->hide();
+    ui->label_6->hide();
+    ui->Puntaje->hide();
+    ui->Vida->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
     view->hide();
-
+    ui->Puntaje->setText(QString::number(pn));
+    ui->Vida->setText(QString::number(vidas));
 
 }
 
@@ -43,9 +49,12 @@ MainWindow::~MainWindow()
 void MainWindow::actualizar()
 {
         enemigo->actualizar(v_limit);
+        borderCollisionE(enemigo->getEsf());
         personaje->actualizar(v_limit);
         borderCollision(personaje->getEsf());
-        borderCollisionE(enemigo->getEsf());
+        personaje2->actualizar(v_limit);
+        borderCollision(personaje2->getEsf());
+
 
 }
 
@@ -105,22 +114,28 @@ void MainWindow::borderCollisionE(enemy *c)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     cuerpo * b = personaje->getEsf();
+    cuerpo * d = personaje2->getEsf();
     if(event->key() == Qt::Key_D){
         b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
         for(int i=0;i<monedas.size();i++){
             if(personaje->collidesWithItem(monedas.at(i))){
                 scene->removeItem(monedas.at(i));
                 monedas= eliminarMoneda(monedas,i);
+                pn+=1;
+                ui->Puntaje->setText(QString::number(pn));
+
             }
         }
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
+
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
+
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -144,6 +159,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(personaje->collidesWithItem(monedas.at(i))){
                 scene->removeItem(monedas.at(i));
                 monedas= eliminarMoneda(monedas,i);
+                pn+=1;
+                ui->Puntaje->setText(QString::number(pn));
             }
         }
         if(monedas.size()==NULL && nivel==1){
@@ -177,7 +194,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         for(int i=0;i<monedas.size();i++){
             if(personaje->collidesWithItem(monedas.at(i))){
                 scene->removeItem(monedas.at(i));
-                monedas= eliminarMoneda(monedas,i);
+                monedas= eliminarMoneda(monedas,i);                
+                pn+=1;
+                ui->Puntaje->setText(QString::number(pn));
             }
         }
         if(monedas.size()==NULL && nivel==1){
@@ -213,14 +232,134 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         }
 
     }
-    else{l=1;}
+    if (num_jugadores==2){
+        if(event->key() == Qt::Key_K){
+            d->set_vel(10,d->getVY(),d->getPX(),d->getPY());
+            for(int i=0;i<monedas.size();i++){
+                if(personaje2->collidesWithItem(monedas.at(i))){
+                    scene->removeItem(monedas.at(i));
+                    monedas= eliminarMoneda(monedas,i);
+                    pn+=1;
+                    ui->Puntaje->setText(QString::number(pn));
 
+                }
+            }
+            if(monedas.size()==NULL && nivel==1){
+                destructorlevel1();
+                nivel+=1;
+
+                level2();
+            }
+            if(monedas.size()==NULL && nivel==2){
+                destructorlevel1();
+                nivel+=1;
+
+                level3();
+            }
+            if(monedas.size()==NULL && nivel==3){
+                timere->stop();
+                 timer->stop();
+                QString txt;
+                txt="Felicidades has recuperado el tesoro";
+                QMessageBox::about(this,"¡FELICIDADES!",txt);
+
+            }
+            if(personaje2->collidesWithItem(muro1)){
+                d->set_vel(-10,d->getVY(),d->getPX(),d->getPY());
+            }
+            if(personaje2->collidesWithItem(muro2)){
+                d->set_vel(-10,d->getVY(),d->getPX(),d->getPY());
+            }
+        }
+        if(event->key() == Qt::Key_H){
+            d->set_vel(-10,d->getVY(),d->getPX(),d->getPY());
+            for(int i=0;i<monedas.size();i++){
+                if(personaje2->collidesWithItem(monedas.at(i))){
+                    scene->removeItem(monedas.at(i));
+                    monedas= eliminarMoneda(monedas,i);
+                    pn+=1;
+                    ui->Puntaje->setText(QString::number(pn));
+                }
+            }
+            if(monedas.size()==NULL && nivel==1){
+                destructorlevel1();
+                nivel+=1;
+                level2();
+            }
+            if(monedas.size()==NULL && nivel==2){
+                destructorlevel1();
+                nivel+=1;
+                level3();
+            }
+            if(monedas.size()==NULL && nivel==3){
+                timere->stop();
+                timer->stop();
+                QString txt;
+                txt="Felicidades has recuperado el tesoro";
+                QMessageBox::about(this,"¡FELICIDADES!",txt);
+
+            }
+            if(personaje2->collidesWithItem(muro1)){
+                d->set_vel(10,d->getVY(),d->getPX(),d->getPY());
+            }
+            if(personaje2->collidesWithItem(muro2)){
+                d->set_vel(10,d->getVY(),d->getPX(),d->getPY());
+            }
+        }
+        if(event->key() == Qt::Key_U){
+            saltos+=1;
+
+            for(int i=0;i<monedas.size();i++){
+                if(personaje2->collidesWithItem(monedas.at(i))){
+                    scene->removeItem(monedas.at(i));
+                    monedas= eliminarMoneda(monedas,i);
+                    pn+=1;
+                    ui->Puntaje->setText(QString::number(pn));
+                }
+            }
+            if(monedas.size()==NULL && nivel==1){
+                destructorlevel1();
+                nivel+=1;
+                level2();
+            }
+            if(monedas.size()==NULL && nivel==2){
+                destructorlevel1();
+                nivel+=1;
+                level3();
+            }
+            if(monedas.size()==NULL && nivel==3){
+                timere->stop();
+                timer->stop();
+                QString txt;
+                txt="Felicidades has recuperado el tesoro";
+                QMessageBox::about(this,"¡FELICIDADES!",txt);
+
+            }
+            if(saltos%4==0){
+                saltos-=4;
+            }
+            else{
+                l=-1;
+                d->set_vel(d->getVX(),40,d->getPX(),d->getPY());
+                if(personaje2->collidesWithItem(muro1)){
+                    d->set_vel(d->getVX(),-10,d->getPX(),d->getPY());
+                }
+                if(personaje2->collidesWithItem(muro2)){
+                    d->set_vel(d->getVX(),-10,d->getPX(),d->getPY());
+                }
+            }
+
+        }
+        else{l=1;}
+    }
+else{l=1;}
 }
 
 void MainWindow::level1()
 {
     ui->setupUi(this);
     nivel=1;
+
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
     ui->un_jugador->hide();
@@ -235,6 +374,12 @@ void MainWindow::level1()
     ui->contrasena->hide();
     ui->label_3->hide();
     ui->pushButton->hide();
+    ui->label_5->show();
+    ui->label_6->show();
+    ui->Puntaje->show();
+    ui->Vida->show();
+    ui->Puntaje->setText(QString::number(pn));
+    ui->Vida->setText(QString::number(vidas));
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
 
@@ -258,9 +403,8 @@ void MainWindow::level1()
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    personaje = new cuerpograf;
+    crear_jugador();
     enemigo =new grafenemigo;
-    personaje->actualizar(v_limit);
     enemigo->actualizar(v_limit);
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
@@ -317,7 +461,6 @@ void MainWindow::level1()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-    scene->addItem(personaje);
     scene->addItem(enemigo);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
@@ -345,6 +488,8 @@ void MainWindow::level2()
     ui->contrasena->hide();
     ui->label_3->hide();
     ui->pushButton->hide();
+    ui->Puntaje->setText(QString::number(pn));
+    ui->Vida->setText(QString::number(vidas));
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
 
@@ -368,9 +513,8 @@ void MainWindow::level2()
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    personaje = new cuerpograf;
+    crear_jugador();
     enemigo =new grafenemigo;
-    personaje->actualizar(v_limit);
     enemigo->actualizar(v_limit);
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
@@ -431,7 +575,6 @@ void MainWindow::level2()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-    scene->addItem(personaje);
     scene->addItem(enemigo);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
@@ -458,6 +601,8 @@ void MainWindow::level3()
     ui->contrasena->hide();
     ui->label_3->hide();
     ui->pushButton->hide();
+    ui->Puntaje->setText(QString::number(pn));
+    ui->Vida->setText(QString::number(vidas));
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
 
@@ -481,9 +626,8 @@ void MainWindow::level3()
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    personaje = new cuerpograf;
+    crear_jugador();
     enemigo =new grafenemigo;
-    personaje->actualizar(v_limit);
     enemigo->actualizar(v_limit);
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
@@ -544,7 +688,6 @@ void MainWindow::level3()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-    scene->addItem(personaje);
     scene->addItem(enemigo);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
@@ -558,10 +701,36 @@ void MainWindow::destructorlevel1()
         paredes.removeAt(i);}
 }
 
+void MainWindow::crear_jugador()
+{
+    personaje = new cuerpograf;
+    personaje->actualizar(v_limit);
+    scene->addItem(personaje);
+    if(num_jugadores==2){
+        personaje2 = new cuerpograf;
+        personaje2->actualizar(v_limit);
+        scene->addItem(personaje2);
+    }
+}
+void MainWindow::on_actionGuardar_triggered()
+{
+    cuerpo *b =personaje->getEsf();
+    puntaje+=pn;
+    pn=0;
+    ui->Puntaje->setText(QString::number(pn));
+    ifstream pp;
+    pp.open("../juego_solitario/Guardar.txt",ios::app);
+    pp.close();
+   ofstream guardar_;
+   guardar_.open("../juego_solitario/Guardar.txt",ios::app);
+   guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<b->getPX()<<","<<b->getPY()<<endl;
+   guardar_.close();
+}
 
 void MainWindow::moveenemy()
 {
     enemy * c = enemigo->getEsf();
+
     //    if(enemigo->x() < personaje->x()){
     //        c->set_vel(5,c->getVY(),c->getPX(),c->getPY());
     //        if(enemigo->collidesWithItem(muro1)){
@@ -702,8 +871,8 @@ void MainWindow::on_iniciar_clicked()
 
 void MainWindow::on_registrar_clicked()
 {
-    ui->cargarpartida->show();
-    ui->nuevapartida->show();
+    ui->cargarpartida->hide();
+    ui->nuevapartida->hide();
     ui->un_jugador->hide();
     ui->dos_jugadores->hide();
     ui->registrar->hide();
@@ -712,11 +881,28 @@ void MainWindow::on_registrar_clicked()
     ui->label->hide();
     ui->label_2->hide();
     ui->usuario->hide();
+    ui->label_4->hide();
     ui->contrasena->hide();
+    ui->label_3->hide();
+    ui->pushButton->hide();
+
     if(ui->un_jugador->isChecked())
         num_jugadores = 1;
     else if(ui->dos_jugadores->isChecked())
         num_jugadores = 2;
+    user=ui->usuario->text();
+    contra=ui->contrasena->text();
+    puntaje+=pn;
+    pn=0;
+    ui->Puntaje->setText(QString::number(pn));
+    ifstream pp;
+    pp.open("../juego_solitario/Guardar.txt",ios::app);
+    pp.close();
+   ofstream guardar_;
+   guardar_.open("../juego_solitario/Guardar.txt",ios::app);
+   guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<"."<<endl;
+   guardar_.close();
+   level1();
 }
 
 void MainWindow::on_volver_clicked()
@@ -738,18 +924,18 @@ void MainWindow::on_pushButton_clicked()
 {
     this->close();
 }
-void MainWindow::guardar()
+
+
+
+
+void MainWindow::on_actionPause_triggered()
 {
-    cuerpo *b =personaje->getEsf();
-    ifstream pp;
-    pp.open(":/Users/Gabriel Restrepo/Documents/juego_solitario/Guardar.txt",ios::app | ios::out);
-    pp.close();
-   ofstream guardar_;
-   guardar_.open(":/Users/Gabriel Restrepo/Documents/juego_solitario/Guardar.txt",ios::app);
-   guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<b->getPX()<<","<<b->getPY()<<endl;
-   guardar_.close();
+    timer->stop();
+    timere->stop();
 }
-void MainWindow::on_actionGuardar_triggered()
+
+void MainWindow::on_actionPlay_triggered()
 {
-    guardar();
+    timer->start(3);
+    timere->start(3);
 }
