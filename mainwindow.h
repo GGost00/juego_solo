@@ -50,6 +50,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_actionGuardar_triggered();
+
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
@@ -66,6 +68,7 @@ private:
     void level3();
     void destructorlevel1();
     void destructorlevel2();
+    void guardar();
     cuerpograf * personaje;
     grafenemigo*  enemigo;
     pared *muro1;

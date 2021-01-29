@@ -6,6 +6,10 @@ int choques=-1;
 int movi=-5;
 int l;
 int nivel=0;
+int num_jugadores;
+QString user,contra;
+int puntaje=0;
+int vidas=5;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -553,6 +557,8 @@ void MainWindow::destructorlevel1()
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
 }
+
+
 void MainWindow::moveenemy()
 {
     enemy * c = enemigo->getEsf();
@@ -671,6 +677,7 @@ void MainWindow::on_nuevapartida_clicked()
     ui->label_2->show();
     ui->usuario->show();
     ui->contrasena->show();
+
 }
 
 void MainWindow::on_iniciar_clicked()
@@ -706,6 +713,10 @@ void MainWindow::on_registrar_clicked()
     ui->label_2->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
+    if(ui->un_jugador->isChecked())
+        num_jugadores = 1;
+    else if(ui->dos_jugadores->isChecked())
+        num_jugadores = 2;
 }
 
 void MainWindow::on_volver_clicked()
@@ -726,4 +737,19 @@ void MainWindow::on_volver_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     this->close();
+}
+void MainWindow::guardar()
+{
+    cuerpo *b =personaje->getEsf();
+    ifstream pp;
+    pp.open(":/Users/Gabriel Restrepo/Documents/juego_solitario/Guardar.txt",ios::app | ios::out);
+    pp.close();
+   ofstream guardar_;
+   guardar_.open(":/Users/Gabriel Restrepo/Documents/juego_solitario/Guardar.txt",ios::app);
+   guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<b->getPX()<<","<<b->getPY()<<endl;
+   guardar_.close();
+}
+void MainWindow::on_actionGuardar_triggered()
+{
+    guardar();
 }
