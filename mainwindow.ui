@@ -26,7 +26,7 @@
    <string>Calabozo Mediebal</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="recursos.qrc">
+   <iconset>
     <normaloff>:/recursos/imagenes/imagen.png</normaloff>:/recursos/imagenes/imagen.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -191,7 +191,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="recursos.qrc">:/recursos/imagenes/prese.png</pixmap>
+     <pixmap>:/recursos/imagenes/prese.png</pixmap>
     </property>
    </widget>
    <widget class="QPushButton" name="volver">
@@ -233,7 +233,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="recursos.qrc">:/recursos/imagenes/fondo.jpg.png</pixmap>
+     <pixmap>:/recursos/imagenes/fondo.jpg.png</pixmap>
     </property>
    </widget>
    <zorder>label_4</zorder>
@@ -260,11 +260,75 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="actionControles"/>
+    <addaction name="actionInstrucciones"/>
+    <addaction name="actionPlay"/>
+    <addaction name="actionPause"/>
+    <addaction name="actionGuardar"/>
+    <addaction name="actionReiniciar"/>
+   </widget>
+   <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionControles">
+   <property name="icon">
+    <iconset>
+     <normaloff>recursos/imagenes/728948-64.png</normaloff>recursos/imagenes/728948-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Controles</string>
+   </property>
+  </action>
+  <action name="actionInstrucciones">
+   <property name="icon">
+    <iconset>
+     <normaloff>recursos/imagenes/iconfinder_info-outline2_4172175.png</normaloff>recursos/imagenes/iconfinder_info-outline2_4172175.png</iconset>
+   </property>
+   <property name="text">
+    <string>Instrucciones</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="icon">
+    <iconset>
+     <normaloff>recursos/imagenes/352073-64.png</normaloff>recursos/imagenes/352073-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="icon">
+    <iconset>
+     <normaloff>recursos/imagenes/352582-64.png</normaloff>recursos/imagenes/352582-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionGuardar">
+   <property name="icon">
+    <iconset>
+     <normaloff>recursos/imagenes/2931171-64.png</normaloff>recursos/imagenes/2931171-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Guardar</string>
+   </property>
+  </action>
+  <action name="actionReiniciar">
+   <property name="icon">
+    <iconset>
+     <normaloff>recursos/imagenes/4213447-64.png</normaloff>recursos/imagenes/4213447-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reiniciar</string>
+   </property>
+  </action>
  </widget>
- <resources>
-  <include location="recursos.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
