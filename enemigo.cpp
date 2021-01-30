@@ -2,6 +2,16 @@
 #include <math.h>
 #include <cmath>
 
+void enemy::setPX(float value)
+{
+    PX = value;
+}
+
+void enemy::setPY(float value)
+{
+    PY = value;
+}
+
 enemy::enemy(float posX_, float posY_, float velX_, float velY_, float masa_, float radio_, float K_, float e_)
 {
     PX = posX_; //pos en x

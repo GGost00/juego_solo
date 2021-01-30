@@ -80,6 +80,7 @@ private:
     cuerpograf * personaje;
     cuerpograf * personaje2;
     grafenemigo*  enemigo;
+    grafenemigo* enemigo2;
     QString rutas= "../juego_solitario/partidas/";
     pared *muro1;
     pared *muro2;
