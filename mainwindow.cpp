@@ -4,7 +4,8 @@ int choques=-1;
 int movi=-5,movi2=5;
 int saltos=0;
 int l,L;
-int nivel=0;
+int nivel=1;
+bool cargado=false;
 int num_jugadores;
 QString user,contra,posiciones;
 int puntaje=0;
@@ -42,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->hide();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vidas));
+
 
 }
 
@@ -413,7 +415,6 @@ if(event->key() != Qt::Key_W && event->key() != Qt::Key_U){
 void MainWindow::level1()
 {
     ui->setupUi(this);
-    nivel=1;
 
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
@@ -550,9 +551,19 @@ void MainWindow::level2()
     ui->label_2->hide();
     ui->usuario->hide();
     ui->label_4->hide();
+    ui->buton->hide();
     ui->contrasena->hide();
     ui->label_3->hide();
     ui->pushButton->hide();
+    ui->label_5->show();
+    ui->label_6->show();
+    ui->Puntaje->show();
+    ui->Vida->show();
+    ui->Guardar->show();
+    ui->Pausa->show();
+    ui->Play->show();
+    ui->eliminar->show();
+    ui->reiniciar->show();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vidas));
     ifstream Leer;
@@ -581,10 +592,9 @@ void MainWindow::level2()
     crear_jugador();
     enemigo =new grafenemigo;
     enemigo->actualizar(v_limit);
-    for(int i=0;i<paredes.size();i++){
-        paredes.removeAt(i);}
-    for(int i=0;i<paredes.size();i++){
-            paredes.removeAt(i);}
+    enemigo2 =new grafenemigo;
+    enemigo2->actualizar(v_limit);
+    enemigo2->setPos(70,460);
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords2.txt");
     char linea[20];
@@ -641,11 +651,13 @@ void MainWindow::level2()
     scene->addItem(muro3);
     scene->addItem(muro4);
     scene->addItem(enemigo);
+    scene->addItem(enemigo2);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
-
+    timer->start(3);
+    timere = new QTimer();
     connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
-
+    timere->start(3);
 }
 
 void MainWindow::level3()
@@ -663,9 +675,19 @@ void MainWindow::level3()
     ui->label_2->hide();
     ui->usuario->hide();
     ui->label_4->hide();
+    ui->buton->hide();
     ui->contrasena->hide();
     ui->label_3->hide();
     ui->pushButton->hide();
+    ui->label_5->show();
+    ui->label_6->show();
+    ui->Puntaje->show();
+    ui->Vida->show();
+    ui->Guardar->show();
+    ui->Pausa->show();
+    ui->Play->show();
+    ui->eliminar->show();
+    ui->reiniciar->show();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vidas));
     ifstream Leer;
@@ -694,10 +716,9 @@ void MainWindow::level3()
     crear_jugador();
     enemigo =new grafenemigo;
     enemigo->actualizar(v_limit);
-    for(int i=0;i<paredes.size();i++){
-        paredes.removeAt(i);}
-    for(int i=0;i<paredes.size();i++){
-        paredes.removeAt(i);}
+    enemigo2 =new grafenemigo;
+    enemigo2->actualizar(v_limit);
+    enemigo2->setPos(70,460);
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords3.txt");
     char linea[20];
@@ -754,14 +775,19 @@ void MainWindow::level3()
     scene->addItem(muro3);
     scene->addItem(muro4);
     scene->addItem(enemigo);
+    scene->addItem(enemigo2);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
+    timer->start(3);
+    timere = new QTimer();
     connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
-
+    timere->start(3);
 }
 
 void MainWindow::destructorlevel1()
 {
+    delete timer;
+    delete timere;
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
@@ -953,7 +979,47 @@ void MainWindow::on_iniciar_clicked()
 
 
     }else{
+        QString usuarioU,usuarioC;
+        ifstream Leer;
+        Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/partidas/Guardar.txt");
+        char linea[20];
+        Leer.getline(linea, sizeof(linea));
+        while (!Leer.eof()) {
+            for(int i=0; i<5;i++){
+                char *puntero;
+                if(i==0){
+                    puntero = strtok(linea, "-");
+                    usuarioU =puntero;
+                }
+                if(i==1){
+                    puntero = strtok(NULL, ",");
+                    usuarioC = puntero;
+                }
+                if(i==2){
+                    puntero = strtok(NULL, ",");
+                    nivel = atoi(puntero);
+                }
+                if(i==3){
+                    puntero = strtok(NULL, ",");
+                    pn = atoi(puntero);
+                }
+                if(i==4){
+                    puntero = strtok(NULL, ".");
+                    num_jugadores = atoi(puntero);
+                }
+            }
+            if(user==usuarioU && contra==usuarioC){
+                cargado=true;
+                Leer.close();
 
+                break;
+            }
+            Leer.getline(linea, sizeof(linea));
+
+        }
+        Leer.close();
+    }
+    if (cargado==true){
         ui->cargarpartida->hide();
         ui->nuevapartida->hide();
         ui->un_jugador->hide();
@@ -969,7 +1035,36 @@ void MainWindow::on_iniciar_clicked()
         ui->label_3->hide();
         ui->pushButton->hide();
         ui->buton->hide();
-        level1();}
+        if(nivel==1){level1();}
+         if(nivel==2){level2();}
+         if(nivel==3){level3();}
+
+    }
+    else{
+
+        QMessageBox msgBox;
+        msgBox.setText("Usuario o Contraseña Invalida.");
+        msgBox.setWindowTitle("Calabozo Medieval");
+        msgBox.setWindowIcon(QIcon(":/recursos/imagenes/imagen.png"));
+        msgBox.setStyleSheet("background-color:#211b18;"
+                             "color:white;");
+        msgBox.exec();
+        ui->usuario->clear();
+        ui->contrasena->clear();
+        ui->buton->setChecked(true);
+
+        ui->cargarpartida->show();
+        ui->nuevapartida->show();
+        ui->un_jugador->hide();
+        ui->dos_jugadores->hide();
+        ui->registrar->hide();
+        ui->iniciar->hide();
+        ui->volver->hide();
+        ui->label->hide();
+        ui->label_2->hide();
+        ui->usuario->hide();
+        ui->contrasena->hide();
+    }
 
 
 }
