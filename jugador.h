@@ -16,7 +16,7 @@ private:
     float AY; //acel en y
     float G; //gravedad
     float K; //Resistencia del aire
-    float e; //Coeficiente de restitucion
+    float e; //Coefici                    }ente de restitucion
     float V; //vector de velocidad
     float dt; //delta tiempo
 public:

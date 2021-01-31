@@ -5,12 +5,14 @@ int movi=-5,movi2=5;
 int saltos=0;
 int l,L;
 int nivel=1;
+int dificultad=1;
 bool cargado=false;
 int num_jugadores;
 QString user,contra,posiciones;
 int puntaje=0;
 int pn=0;
-int vidas=5;
+int vida1=500,vida2=500;
+int px1=32,py1=150,px2=32,py2=150;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -33,16 +35,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label_6->hide();
     ui->Puntaje->hide();
     ui->Vida->hide();
+        ui->Vida2->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
-    ui->Guardar->hide();
     ui->Pausa->hide();
     ui->Play->hide();
-    ui->eliminar->hide();
-    ui->reiniciar->hide();
     view->hide();
     ui->Puntaje->setText(QString::number(pn));
-    ui->Vida->setText(QString::number(vidas));
+    ui->Vida->setText(QString::number(vida1));
+    ui->Vida2->setText(QString::number(vida1));
 
 
 }
@@ -89,6 +90,21 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
         if(personaje->collidesWithItem(paredes.at(i))){
           b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
+    if(vida1<0){
+        timere->stop();
+         timer->stop();
+        QString txt;
+        txt="Te han matado, suerte para la proxima";
+        QMessageBox::about(this,"¡Lo Siento!",txt);
+        this->close();
+    }
+    if(personaje->collidesWithItem(enemigo)){
+      vida1-=1;
+          ui->Vida->setText(QString::number(vida1));
+    }
+    px1=b->getPX();
+    py1=b->getPY();
+
     if(num_jugadores==2){
         if(d->getPX()<d->getR()){
             d->set_vel(-1*d->getE()*d->getVX(),d->getVY(),d->getR(),d->getPY());
@@ -103,10 +119,24 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
         if(d->getPY()>v_limit-d->getR()){
             d->set_vel(d->getVX(),-1*d->getE()*d->getVY(),d->getPX(),v_limit-d->getR());
         }
+        if(vida2<0){
+            timere->stop();
+             timer->stop();
+            QString txt;
+            txt="Te han matado, suerte para la proxima";
+            QMessageBox::about(this,"¡Lo Siento!",txt);
+            this->close();
+        }
         for(int i=0;i<paredes.size();i++){
             if(personaje2->collidesWithItem(paredes.at(i))){
               d->set_vel(d->getVX(),0,d->getPX(),L+d->getPY());
             }}
+        if(personaje2->collidesWithItem(enemigo)){
+          vida2-=1;
+              ui->Vida2->setText(QString::number(vida2));
+        }
+        px2=d->getPX();
+        py2=d->getPY();
     }
 //    if(personaje->collidesWithItem(muro1)){
 //        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
@@ -135,6 +165,20 @@ void MainWindow::borderCollision(cuerpo *b)
         if(personaje->collidesWithItem(paredes.at(i))){
           b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
+    if(vida1<0){
+        timere->stop();
+         timer->stop();
+        QString txt;
+        txt="Te han matado, suerte para la proxima";
+        QMessageBox::about(this,"¡Lo Siento!",txt);
+        this->close();
+    }
+    if(personaje->collidesWithItem(enemigo)){
+      vida1-=1;
+          ui->Vida->setText(QString::number(vida1));
+    }
+    px1=b->getPX();
+    py1=b->getPY();
 }
 void MainWindow::borderCollisionE(enemy *c)
 {
@@ -181,13 +225,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
-
+            vida1=250;
+            vida2=250;
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
-
+            vida1=250;
+            vida2=250;
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -218,11 +264,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
+            vida1=250;
+            vida2=250;
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
+            vida1=250;
+            vida2=250;
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -254,11 +304,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
+            vida1=250;
+            vida2=250;
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
+            vida1=250;
+            vida2=250;
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -337,6 +391,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
                 nivel+=1;
+                vida1=250;
+                vida2=250;
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
@@ -414,7 +470,6 @@ if(event->key() != Qt::Key_W && event->key() != Qt::Key_U){
 
 void MainWindow::level1()
 {
-    ui->setupUi(this);
 
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
@@ -434,14 +489,16 @@ void MainWindow::level1()
     ui->label_5->show();
     ui->label_6->show();
     ui->Puntaje->show();
+    ui->Vida2->hide();
     ui->Vida->show();
-    ui->Guardar->show();
     ui->Pausa->show();
     ui->Play->show();
-    ui->eliminar->show();
-    ui->reiniciar->show();
     ui->Puntaje->setText(QString::number(pn));
-    ui->Vida->setText(QString::number(vidas));
+    ui->Vida->setText(QString::number(vida1));
+    if(num_jugadores==2){
+            ui->Vida2->show();
+            ui->Vida2->setText(QString::number(vida2));
+    }
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
 
@@ -464,6 +521,10 @@ void MainWindow::level1()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
+    for(int i=0;i<monedas.size();i++){
+        monedas.removeAt(i);}
 
     crear_jugador();
     enemigo =new grafenemigo;
@@ -538,7 +599,6 @@ void MainWindow::level1()
 
 void MainWindow::level2()
 {
-    ui->setupUi(this);
 
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
@@ -558,14 +618,16 @@ void MainWindow::level2()
     ui->label_5->show();
     ui->label_6->show();
     ui->Puntaje->show();
+    ui->Vida2->hide();
     ui->Vida->show();
-    ui->Guardar->show();
     ui->Pausa->show();
     ui->Play->show();
-    ui->eliminar->show();
-    ui->reiniciar->show();
     ui->Puntaje->setText(QString::number(pn));
-    ui->Vida->setText(QString::number(vidas));
+    ui->Vida->setText(QString::number(vida1));
+    if(num_jugadores==2){
+            ui->Vida2->show();
+            ui->Vida2->setText(QString::number(vida2));
+    }
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
 
@@ -588,6 +650,10 @@ void MainWindow::level2()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
+    for(int i=0;i<monedas.size();i++){
+        monedas.removeAt(i);}
 
     crear_jugador();
     enemigo =new grafenemigo;
@@ -662,7 +728,6 @@ void MainWindow::level2()
 
 void MainWindow::level3()
 {
-    ui->setupUi(this);
 
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
@@ -682,14 +747,16 @@ void MainWindow::level3()
     ui->label_5->show();
     ui->label_6->show();
     ui->Puntaje->show();
+    ui->Vida2->hide();
     ui->Vida->show();
-    ui->Guardar->show();
     ui->Pausa->show();
     ui->Play->show();
-    ui->eliminar->show();
-    ui->reiniciar->show();
     ui->Puntaje->setText(QString::number(pn));
-    ui->Vida->setText(QString::number(vidas));
+    ui->Vida->setText(QString::number(vida1));
+    if(num_jugadores==2){
+            ui->Vida2->show();
+            ui->Vida2->setText(QString::number(vida2));
+    }
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
 
@@ -712,6 +779,10 @@ void MainWindow::level3()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
+    for(int i=0;i<monedas.size();i++){
+        monedas.removeAt(i);}
 
     crear_jugador();
     enemigo =new grafenemigo;
@@ -799,10 +870,13 @@ void MainWindow::crear_jugador()
     personaje = new cuerpograf;
     personaje->actualizar(v_limit);
     scene->addItem(personaje);
+
+
     if(num_jugadores==2){
         personaje2 = new cuerpograf;
         personaje2->actualizar(v_limit);
         scene->addItem(personaje2);
+
     }
 }
 
@@ -985,7 +1059,7 @@ void MainWindow::on_iniciar_clicked()
         char linea[20];
         Leer.getline(linea, sizeof(linea));
         while (!Leer.eof()) {
-            for(int i=0; i<5;i++){
+            for(int i=0; i<9;i++){
                 char *puntero;
                 if(i==0){
                     puntero = strtok(linea, "-");
@@ -1004,9 +1078,31 @@ void MainWindow::on_iniciar_clicked()
                     pn = atoi(puntero);
                 }
                 if(i==4){
-                    puntero = strtok(NULL, ".");
+                    puntero = strtok(NULL, ",");
                     num_jugadores = atoi(puntero);
                 }
+
+
+                if(i==5){
+                    puntero = strtok(NULL, ",");
+                    px1 = atoi(puntero);
+                }
+                if(i==6){
+                    puntero = strtok(NULL, ",");
+                    py1 = atoi(puntero);
+                }
+                if(i==7){
+                    puntero = strtok(NULL, ",");
+                    px2 = atoi(puntero);
+                }
+                if(i==8){
+                    puntero = strtok(NULL, ".");
+                    py2 = atoi(puntero);
+                }
+
+
+
+
             }
             if(user==usuarioU && contra==usuarioC){
                 cargado=true;
@@ -1118,7 +1214,7 @@ contra=ui->contrasena->text();
         pp.close();
        ofstream guardar_;
        guardar_.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-       guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<"."<<endl;
+       guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<py1<<","<<px2<<","<<py2<<"."<<endl;
        guardar_.close();
        level1();
     }
@@ -1146,50 +1242,27 @@ void MainWindow::on_pushButton_clicked()
     this->close();
 }
 
-void MainWindow::on_eliminar_clicked()
-{
-
-}
-
-void MainWindow::on_reiniciar_clicked()
-{
-    switch (nivel) {
-    case 1:
-        destructorlevel1();
-        level1();
-        break;
-    case 2:
-        destructorlevel1();
-        level2();
-        break;
-    case 3:
-        destructorlevel1();
-        level3();
-        break;
-
-    }
-}
 
 void MainWindow::on_Play_clicked()
 {
     timer->start(3);
     timere->start(3);
+    ui->Pausa->show();
+    ui->Play->hide();
 }
 
 void MainWindow::on_Pausa_clicked()
 {
     timer->stop();
     timere->stop();
+    ui->Pausa->hide();
+    ui->Play->show();
 }
 
-void MainWindow::on_Guardar_clicked()
-{
-    this->close();
-    cuerpo *b =personaje->getEsf();
-    cuerpo *d =personaje2->getEsf();
 
-    puntaje+=pn;
-    pn=0;
+void MainWindow::on_actionGuardar_triggered()
+{
+    puntaje=pn;
     for(int i=0;i<monedas.size();i++){
         posiciones+=monedas.at(i)->getPosx();
         posiciones+=",";
@@ -1199,19 +1272,167 @@ void MainWindow::on_Guardar_clicked()
     }
     ui->Puntaje->setText(QString::number(pn));
     ifstream pp;
-    pp.open("../juego_solitario/partida.txt",ios::app);
+    pp.open("../juego_solitario/partidas/partida.txt",ios::app);
     pp.close();
     ofstream guardar_;
-    guardar_.open("../juego_solitario/Guardar.txt",ios::app);
+    guardar_.open("../juego_solitario/partidas/Guardar.txt",ios::app);
     if(num_jugadores==2){
-        guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<b->getPX()<<","<<b->getPY()<<","<<d->getPX()<<","<<d->getPY()<<endl;
+        guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<py1<<","<<px2<<","<<py2<<"."<<endl;
     }else{
-        guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<b->getPX()<<","<<b->getPY()<<endl;
+        guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<px1<<","<<0<<","<<0<<"."<<endl;
     }
     guardar_.close();
     ofstream partida;
-    partida.open("../juego_solitario/partida.txt",ios::app);
+    partida.open("../juego_solitario/partidas/partida.txt",ios::app);
     partida<<posiciones.toStdString();
     partida.close();
 
+    QMessageBox msgBox;
+    msgBox.setText("Partida Guardada");
+    msgBox.setWindowTitle("¡EXITO!");
+    msgBox.setWindowIcon(QIcon(":/recursos/imagenes/imagen.png"));
+    msgBox.setStyleSheet("background-color:#211b18;"
+                         "color:white;");
+    msgBox.exec();
+}
+
+void MainWindow::on_actionReiniciar_triggered()
+{
+    switch (nivel) {
+    case 1:
+        destructorlevel1();
+        vida1=500;
+        vida2=500;
+        pn=0;
+        level1();
+        break;
+    case 2:
+        destructorlevel1();
+        vida1=250;
+        vida2=250;
+        pn=0;
+        level2();
+        break;
+    case 3:
+        destructorlevel1();
+        vida1=250;
+        vida2=250;
+        pn=0;
+        level3();
+        break;
+
+    }
+}
+
+void MainWindow::on_actionEliminar_triggered()
+{
+    QString usuarioU,usuarioC;
+    ifstream Leer;
+    ofstream guardar_;
+    guardar_.open("../juego_solitario/partidas/Guardar.txt",ios::app);
+    Leer.open("../juego_solitario/partidas/Guardar.txt");
+    char linea[20];
+    Leer.getline(linea, sizeof(linea));
+    while (!Leer.eof()) {
+        for(int i=0; i<9;i++){
+            char *puntero;
+            if(i==0){
+                puntero = strtok(linea, "-");
+                usuarioU =puntero;
+            }
+            if(i==1){
+                puntero = strtok(NULL, ",");
+                usuarioC = puntero;
+            }
+            if(i==2){
+                puntero = strtok(NULL, ",");
+                nivel = atoi(puntero);
+            }
+            if(i==3){
+                puntero = strtok(NULL, ",");
+                pn = atoi(puntero);
+            }
+            if(i==4){
+                puntero = strtok(NULL, ",");
+                num_jugadores = atoi(puntero);
+            }
+
+
+            if(i==5){
+                puntero = strtok(NULL, ",");
+                px1 = atoi(puntero);
+            }
+            if(i==6){
+                puntero = strtok(NULL, ",");
+                py1 = atoi(puntero);
+            }
+            if(i==7){
+                puntero = strtok(NULL, ",");
+                px2 = atoi(puntero);
+            }
+            if(i==8){
+                puntero = strtok(NULL, ".");
+                py2 = atoi(puntero);
+            }
+
+
+
+
+        }
+        if(user==usuarioU && contra==usuarioC){
+            QMessageBox msgBox;
+            msgBox.setText("Usuario eliminado");
+            msgBox.setWindowTitle("¡EXITO!");
+            msgBox.setWindowIcon(QIcon(":/recursos/imagenes/imagen.png"));
+            msgBox.setStyleSheet("background-color:#211b18;"
+                                 "color:white;");
+            msgBox.exec();
+        }else{
+             guardar_<<usuarioU.toStdString()<<"-"<<usuarioC.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<py1<<","<<px2<<","<<py2<<"."<<endl;
+        }
+        Leer.getline(linea, sizeof(linea));
+
+    }
+    Leer.close();
+    guardar_.close();
+    this->close();
+}
+
+
+void MainWindow::on_actionControles_triggered()
+{
+    timer->stop();
+    timere->stop();
+    QString txt;
+    txt="para poder ver las propiedades de los planetas \n"
+        "las cuales son:\n"
+        "- Posicion (x,y)\n"
+        "- Velocidad (x,y)\n"
+        "- Aceleracion (x,y)\n"
+        "Seleccione la opcion de planetas y seleccione\n"
+        "el planeta al cual le desea ver las propiedades,\n"
+        "estas cualidades saldran en la parde abajo  las\n"
+        "cuales podra ver de una manera facil y sencilla.\n";
+    QMessageBox::about(this,"Instrucciones",txt);
+    timer->start(3);
+    timere->start(3);
+}
+
+void MainWindow::on_actionInstrucciones_triggered()
+{
+    timer->stop();
+    timere->stop();
+    QString txt;
+    txt="para poder ver las propiedades de los planetas \n"
+        "las cuales son:\n"
+        "- Posicion (x,y)\n"
+        "- Velocidad (x,y)\n"
+        "- Aceleracion (x,y)\n"
+        "Seleccione la opcion de planetas y seleccione\n"
+        "el planeta al cual le desea ver las propiedades,\n"
+        "estas cualidades saldran en la parde abajo  las\n"
+        "cuales podra ver de una manera facil y sencilla.\n";
+    QMessageBox::about(this,"Instrucciones",txt);
+    timer->start(3);
+    timere->start(3);
 }
