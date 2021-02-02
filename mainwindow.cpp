@@ -354,13 +354,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
                 nivel+=1;
-
+                vida1=250;
+                vida2=250;
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
                 nivel+=1;
-
+                vida1=250;
+                vida2=250;
                 level3();
             }
             if(monedas.size()==NULL && nivel==3){
@@ -397,6 +399,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
+                vida1=250;
+                vida2=250;
                 nivel+=1;
                 level3();
             }
@@ -428,11 +432,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
+                vida1=250;
+                vida2=250;
                 nivel+=1;
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
+                vida1=250;
+                vida2=250;
                 nivel+=1;
                 level3();
             }
@@ -1053,67 +1061,47 @@ void MainWindow::on_iniciar_clicked()
 
 
     }else{
-        QString usuarioU,usuarioC;
-        ifstream Leer;
-        Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/partidas/Guardar.txt");
-        char linea[20];
-        Leer.getline(linea, sizeof(linea));
-        while (!Leer.eof()) {
-            for(int i=0; i<9;i++){
-                char *puntero;
-                if(i==0){
-                    puntero = strtok(linea, "-");
-                    usuarioU =puntero;
-                }
-                if(i==1){
-                    puntero = strtok(NULL, ",");
-                    usuarioC = puntero;
-                }
-                if(i==2){
-                    puntero = strtok(NULL, ",");
-                    nivel = atoi(puntero);
-                }
-                if(i==3){
-                    puntero = strtok(NULL, ",");
-                    pn = atoi(puntero);
-                }
-                if(i==4){
-                    puntero = strtok(NULL, ",");
-                    num_jugadores = atoi(puntero);
-                }
+        string Nnames,clave,nivel_,punaje_,cantjugadores,px1_,px2_,py1_,py2_;
 
-
-                if(i==5){
-                    puntero = strtok(NULL, ",");
-                    px1 = atoi(puntero);
-                }
-                if(i==6){
-                    puntero = strtok(NULL, ",");
-                    py1 = atoi(puntero);
-                }
-                if(i==7){
-                    puntero = strtok(NULL, ",");
-                    px2 = atoi(puntero);
-                }
-                if(i==8){
-                    puntero = strtok(NULL, ".");
-                    py2 = atoi(puntero);
-                }
-
-
-
-
-            }
-            if(user==usuarioU && contra==usuarioC){
+        ifstream leer;
+        ofstream Temp,Guardar;
+        Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
+        leer.open("../juego_solitario/partidas/Guardar.txt");
+        Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+        bool encontrado =false;
+        leer>>Nnames;
+        while (!leer.eof()) {
+            leer>>clave;
+            leer>>nivel_;
+            leer>>punaje_;
+            leer>>cantjugadores;
+            leer>>px1_;
+            leer>>py1_;
+            leer>>px2_;
+            leer>>py2_;
+            if(Nnames==user.toStdString()&&clave==contra.toStdString()){
+                encontrado=true;
                 cargado=true;
-                Leer.close();
+                nivel=stoi(nivel_);
+                pn=stoi(punaje_);
+                num_jugadores=stoi(cantjugadores);
+                Temp<<Nnames<<" "<<clave<<" "<<nivel_<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
 
-                break;
             }
-            Leer.getline(linea, sizeof(linea));
+            else{
+                Temp<<Nnames<<" "<<clave<<" "<<nivel_<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
+            }
+            leer>>Nnames;
 
         }
-        Leer.close();
+        if(!encontrado){
+            Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<1<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<py1<<" "<<px2<<" "<<py2<<endl;
+        }
+        leer.close();
+        Temp.close();
+        Guardar.close();
+        remove("../juego_solitario/partidas/Guardar.txt");
+        rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
     }
     if (cargado==true){
         ui->cargarpartida->hide();
@@ -1132,8 +1120,13 @@ void MainWindow::on_iniciar_clicked()
         ui->pushButton->hide();
         ui->buton->hide();
         if(nivel==1){level1();}
-         if(nivel==2){level2();}
-         if(nivel==3){level3();}
+         if(nivel==2){
+             vida1=250;
+             vida2=250;
+             level2();}
+         if(nivel==3){
+             vida1=250;
+             vida2=250;level3();}
 
     }
     else{
@@ -1167,7 +1160,6 @@ void MainWindow::on_iniciar_clicked()
 
 void MainWindow::on_registrar_clicked()
 {
-string ruta ="hola";
 user=ui->usuario->text();
 contra=ui->contrasena->text();
 
@@ -1205,18 +1197,43 @@ contra=ui->contrasena->text();
             num_jugadores = 1;
         else if(ui->dos_jugadores->isChecked())
             num_jugadores = 2;
+        string Nnames,clave,nivel_,punaje_,cantjugadores,px1_,px2_,py1_,py2_;
 
-        puntaje+=pn;
-        pn=0;
-        ui->Puntaje->setText(QString::number(pn));
-        ifstream pp;
-        pp.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-        pp.close();
-       ofstream guardar_;
-       guardar_.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-       guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<py1<<","<<px2<<","<<py2<<"."<<endl;
-       guardar_.close();
-       level1();
+        ifstream leer;
+        ofstream Temp,Guardar;
+        Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
+        leer.open("../juego_solitario/partidas/Guardar.txt");
+        Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+        bool encontrado =false;
+        leer>>Nnames;
+        while (!leer.eof()) {
+            leer>>clave;
+            leer>>nivel_;
+            leer>>punaje_;
+            leer>>cantjugadores;
+            leer>>px1_;
+            leer>>py1_;
+            leer>>px2_;
+            leer>>py2_;
+            if(Nnames==user.toStdString()&&clave==contra.toStdString()){
+                encontrado=true;
+                Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<nivel<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<py1<<" "<<px2<<" "<<py2<<endl;
+            }
+            else{
+                Temp<<Nnames<<" "<<clave<<" "<<nivel<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
+            }
+            leer>>Nnames;
+
+        }
+        if(!encontrado){
+            Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<1<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<py1<<" "<<px2<<" "<<py2<<endl;
+        }
+        leer.close();
+        Temp.close();
+        Guardar.close();
+        remove("../juego_solitario/partidas/Guardar.txt");
+        rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+        level1();
     }
 
 }
@@ -1262,30 +1279,44 @@ void MainWindow::on_Pausa_clicked()
 
 void MainWindow::on_actionGuardar_triggered()
 {
-    puntaje=pn;
-    for(int i=0;i<monedas.size();i++){
-        posiciones+=monedas.at(i)->getPosx();
-        posiciones+=",";
-        posiciones+=monedas.at(i)->getPosy();
-        posiciones+="\n";
 
-    }
-    ui->Puntaje->setText(QString::number(pn));
-    ifstream pp;
-    pp.open("../juego_solitario/partidas/partida.txt",ios::app);
-    pp.close();
-    ofstream guardar_;
-    guardar_.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-    if(num_jugadores==2){
-        guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<py1<<","<<px2<<","<<py2<<"."<<endl;
-    }else{
-        guardar_<<user.toStdString()<<"-"<<contra.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<px1<<","<<0<<","<<0<<"."<<endl;
-    }
-    guardar_.close();
-    ofstream partida;
-    partida.open("../juego_solitario/partidas/partida.txt",ios::app);
-    partida<<posiciones.toStdString();
-    partida.close();
+        string Nnames,clave,nivel_,punaje_,cantjugadores,px1_,px2_,py1_,py2_;
+
+        ifstream leer;
+        ofstream Temp,Guardar;
+        Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
+        leer.open("../juego_solitario/partidas/Guardar.txt");
+        Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+        bool encontrado =false;
+        leer>>Nnames;
+        while (!leer.eof()) {
+            leer>>clave;
+            leer>>nivel_;
+            leer>>punaje_;
+            leer>>cantjugadores;
+            leer>>px1_;
+            leer>>py1_;
+            leer>>px2_;
+            leer>>py2_;
+            if(Nnames==user.toStdString()&& clave ==contra.toStdString()){
+                encontrado=true;
+                Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<nivel<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<py1<<" "<<px2<<" "<<py2<<endl;
+            }
+            else{
+                Temp<<Nnames<<" "<<clave<<" "<<nivel_<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
+            }
+            leer>>Nnames;
+
+        }
+        if(!encontrado){
+            Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<nivel<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<px1<<" "<<px2<<" "<<py2<<endl;
+        }
+        leer.close();
+        Temp.close();
+        Guardar.close();
+        remove("../juego_solitario/partidas/Guardar.txt");
+        rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+
 
     QMessageBox msgBox;
     msgBox.setText("Partida Guardada");
@@ -1326,76 +1357,53 @@ void MainWindow::on_actionReiniciar_triggered()
 
 void MainWindow::on_actionEliminar_triggered()
 {
-    QString usuarioU,usuarioC;
-    ifstream Leer;
-    ofstream guardar_;
-    guardar_.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-    Leer.open("../juego_solitario/partidas/Guardar.txt");
-    char linea[20];
-    Leer.getline(linea, sizeof(linea));
-    while (!Leer.eof()) {
-        for(int i=0; i<9;i++){
-            char *puntero;
-            if(i==0){
-                puntero = strtok(linea, "-");
-                usuarioU =puntero;
-            }
-            if(i==1){
-                puntero = strtok(NULL, ",");
-                usuarioC = puntero;
-            }
-            if(i==2){
-                puntero = strtok(NULL, ",");
-                nivel = atoi(puntero);
-            }
-            if(i==3){
-                puntero = strtok(NULL, ",");
-                pn = atoi(puntero);
-            }
-            if(i==4){
-                puntero = strtok(NULL, ",");
-                num_jugadores = atoi(puntero);
-            }
 
+    string Nnames,clave,nivel_,punaje_,cantjugadores,px1_,px2_,py1_,py2_;
 
-            if(i==5){
-                puntero = strtok(NULL, ",");
-                px1 = atoi(puntero);
-            }
-            if(i==6){
-                puntero = strtok(NULL, ",");
-                py1 = atoi(puntero);
-            }
-            if(i==7){
-                puntero = strtok(NULL, ",");
-                px2 = atoi(puntero);
-            }
-            if(i==8){
-                puntero = strtok(NULL, ".");
-                py2 = atoi(puntero);
-            }
-
-
-
-
+    ifstream leer;
+    ofstream Temp,Guardar;
+    Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
+    leer.open("../juego_solitario/partidas/Guardar.txt");
+    Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+    bool encontrado =false;
+    leer>>Nnames;
+    while (!leer.eof()) {
+        leer>>clave;
+        leer>>nivel_;
+        leer>>punaje_;
+        leer>>cantjugadores;
+        leer>>px1_;
+        leer>>py1_;
+        leer>>px2_;
+        leer>>py2_;
+        if(Nnames==user.toStdString() && clave==contra.toStdString()){
+            encontrado=true;
         }
-        if(user==usuarioU && contra==usuarioC){
-            QMessageBox msgBox;
-            msgBox.setText("Usuario eliminado");
-            msgBox.setWindowTitle("¡EXITO!");
-            msgBox.setWindowIcon(QIcon(":/recursos/imagenes/imagen.png"));
-            msgBox.setStyleSheet("background-color:#211b18;"
-                                 "color:white;");
-            msgBox.exec();
-        }else{
-             guardar_<<usuarioU.toStdString()<<"-"<<usuarioC.toStdString()<<","<<nivel<<","<<puntaje<<","<<num_jugadores<<","<<px1<<","<<py1<<","<<px2<<","<<py2<<"."<<endl;
+        else{
+            Temp<<Nnames<<" "<<clave<<" "<<nivel_<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
         }
-        Leer.getline(linea, sizeof(linea));
+        leer>>Nnames;
 
     }
-    Leer.close();
-    guardar_.close();
+    if(!encontrado){
+        Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<nivel<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<px1<<" "<<px2<<" "<<py2<<endl;
+    }
+    leer.close();
+    Temp.close();
+    Guardar.close();
+    remove("../juego_solitario/partidas/Guardar.txt");
+    rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+
+
+    QMessageBox msgBox;
+    msgBox.setText("Usuario eliminado");
+    msgBox.setWindowTitle("¡EXITO!");
+    msgBox.setWindowIcon(QIcon(":/recursos/imagenes/imagen.png"));
+    msgBox.setStyleSheet("background-color:#211b18;"
+                         "color:white;");
+    msgBox.exec();
     this->close();
+
 }
 
 

@@ -23,7 +23,7 @@
    <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>Calabozo Mediebal</string>
+   <string>Calabozo Medieval</string>
   </property>
   <property name="windowIcon">
    <iconset resource="recursos.qrc">
@@ -370,10 +370,10 @@
    <zorder>Puntaje</zorder>
    <zorder>label_6</zorder>
    <zorder>Vida</zorder>
-   <zorder>Pausa</zorder>
    <zorder>Play</zorder>
    <zorder>buton</zorder>
    <zorder>Vida2</zorder>
+   <zorder>Pausa</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
