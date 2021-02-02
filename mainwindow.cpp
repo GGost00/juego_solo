@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Pausa->hide();
     ui->Play->hide();
     view->hide();
+
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vida1));
     ui->Vida2->setText(QString::number(vida1));
@@ -57,10 +58,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::actualizar()
 {
-        enemigo->actualizar(v_limit);
-        borderCollisionE(enemigo->getEsf());
-        enemigo2->actualizar(v_limit);
-        borderCollisionE(enemigo2->getEsf());
+
         personaje->actualizar(v_limit);
         borderCollision(personaje->getEsf());
         if(num_jugadores==2){
@@ -91,16 +89,12 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
           b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
     if(vida1<0){
-        timere->stop();
+
          timer->stop();
         QString txt;
         txt="Te han matado, suerte para la proxima";
         QMessageBox::about(this,"¡Lo Siento!",txt);
         this->close();
-    }
-    if(personaje->collidesWithItem(enemigo)){
-      vida1-=1;
-          ui->Vida->setText(QString::number(vida1));
     }
     px1=b->getPX();
     py1=b->getPY();
@@ -120,7 +114,7 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
             d->set_vel(d->getVX(),-1*d->getE()*d->getVY(),d->getPX(),v_limit-d->getR());
         }
         if(vida2<0){
-            timere->stop();
+
              timer->stop();
             QString txt;
             txt="Te han matado, suerte para la proxima";
@@ -131,10 +125,6 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
             if(personaje2->collidesWithItem(paredes.at(i))){
               d->set_vel(d->getVX(),0,d->getPX(),L+d->getPY());
             }}
-        if(personaje2->collidesWithItem(enemigo)){
-          vida2-=1;
-              ui->Vida2->setText(QString::number(vida2));
-        }
         px2=d->getPX();
         py2=d->getPY();
     }
@@ -165,47 +155,225 @@ void MainWindow::borderCollision(cuerpo *b)
         if(personaje->collidesWithItem(paredes.at(i))){
           b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
+    for(int i=0;i<enemigos.size();i++){
+        if(personaje->collidesWithItem(enemigos.at(i))){
+          vida1-=1;
+          ui->Vida->setText(QString::number(vida1));
+        }}
     if(vida1<0){
-        timere->stop();
+
          timer->stop();
         QString txt;
         txt="Te han matado, suerte para la proxima";
         QMessageBox::about(this,"¡Lo Siento!",txt);
         this->close();
     }
-    if(personaje->collidesWithItem(enemigo)){
-      vida1-=1;
-          ui->Vida->setText(QString::number(vida1));
-    }
     px1=b->getPX();
     py1=b->getPY();
 }
-void MainWindow::borderCollisionE(enemy *c)
+
+void MainWindow::mover_enemigo()
 {
-    if(c->getPX()<c->getR()){
-        c->set_vel(-1*c->getE()*c->getVX(),c->getVY(),c->getR(),c->getPY());
+    for(int i=0; i<enemigos.size();i++) //ciclo que lee toda la lista de enemigos
+    {
+        /* enemmigo 1 y 2 son las bolas que rebotan
+         * enemigo 3 y 4 las bolas con movimiento MCU
+         * enemigo 5 con el movimiento MAS*/
 
-    }
-    if(c->getPX()>h_limit-c->getR()){
-        c->set_vel(-1*c->getE()*c->getVX(),c->getVY(),h_limit-c->getR(),c->getPY());
-    }
-    if(c->getPY()<c->getR()){
-        c->set_vel(c->getVX(),-1*c->getE()*c->getVY(),c->getPX(),c->getR());
-    }
-    if(c->getPY()>v_limit-c->getR()){
-        c->set_vel(c->getVX(),-1*c->getE()*c->getVY(),c->getPX(),v_limit-c->getR());
-    }
-    for(int i=0;i<paredes.size();i++){
-        if(enemigo->collidesWithItem(paredes.at(i))){
-          c->set_vel(movi,0,c->getPX(),1+c->getPY());
-        }}
-//    if(personaje->collidesWithItem(muro1)){
-//        c->set_vel(-1*c->getE()*c->getVX(),c->getVY(),c->getR(),c->getPY());
-//    }
-//    if(personaje->collidesWithItem(muro2)){
+        //qDebug() <<"velocidad: "<<enemigos.at(i)->getVel();
+        //qDebug() <<"velocidadx: "<<enemigos.at(i)->getVelx();
+        if(enemigos.at(i)->getVel()>70){enemigos.at(i)->setVel(70);} //condicion para que no supere cierta velocidad
+        if(enemigos.at(i)->getVelx()<20){enemigos.at(i)->setVelx(20);} //condicion para que no rebote con una velocidad menor
 
-//    }
+        if(i==0) //condicion que pregunta si es el tercer enemigo
+        {
+            enemigos.at(i)->MAS(500,250,-120,1,2); //darle movimiento circular uniforme
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+        if(i==1) //condicion que pregunta si es el tercer enemigo
+        {
+            enemigos.at(i)->MAS(800,90,-120,1,1); //darle movimiento circular uniforme
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==2) //condicion que pregunta si es el tercer enemigo
+        {
+            enemigos.at(i)->MAS(200,90,120,1,1); //darle movimiento circular uniforme
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==3) //condicion que pregunta si es el cuarto enemigo
+        {
+            enemigos.at(i)->MAS(800,310,-120,1,1); //darle el movimiento armonico simple
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==4) //condicion que pregunta si es el quinto enemigo
+        {
+            enemigos.at(i)->MAS(200,310,120,1,1); //darle movmiento armonico simple
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+
+
 }
+}
+
+void MainWindow::mover_enemigo2()
+{
+    for(int i=0; i<enemigos.size();i++) //ciclo que lee toda la lista de enemigos
+    {
+        /* enemmigo 1 y 2 son las bolas que rebotan
+         * enemigo 3 y 4 las bolas con movimiento MCU
+         * enemigo 5 con el movimiento MAS*/
+
+        //qDebug() <<"velocidad: "<<enemigos.at(i)->getVel();
+        //qDebug() <<"velocidadx: "<<enemigos.at(i)->getVelx();
+        if(enemigos.at(i)->getVel()>60){enemigos.at(i)->setVel(60);} //condicion para que no supere cierta velocidad
+        if(enemigos.at(i)->getVelx()<30){enemigos.at(i)->setVelx(30);} //condicion para que no rebote con una velocidad menor
+
+        //mover a la derecha
+        if(enemigos.at(i)->getDir()==1) //condicion para preguntar por la direcion
+        {
+
+            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
+            {
+                enemigos.at(i)->setColumnas_fila(0,0);//actulizar el sprite
+            }
+            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativo
+            {
+                enemigos.at(i)->setColumnas_fila(0,84);// actualiza el sprite
+            }
+            enemigos.at(i)->actualizarposicion_derecha(); //actualiza la posicion
+            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
+            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
+            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
+        }
+
+        //mover a la izquierda
+        if(enemigos.at(i)->getDir()==2) //condicion para preguntar la direccion
+        {
+            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
+            {
+                enemigos.at(i)->setColumnas_fila(80,0); //actualiza el sprite
+            }
+            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativa
+            {
+                enemigos.at(i)->setColumnas_fila(80,84); //actualizar el sprite
+            }
+            enemigos.at(i)->actualizarposicion_izquierda(); //actualiza la posicion
+            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
+            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
+            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
+        }
+
+
+
+        if(i==2) //condicion que pregunta si es el tercer enemigo
+        {
+            enemigos.at(i)->MCU(300,450,150,-1.5,0); //darle movimiento circular uniforme
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==3) //condicion que pregunta si es el cuarto enemigo
+        {
+            enemigos.at(i)->MCU(700,450,150,-1.5,-3.1416); //darle el omvimiento circular uniforme
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==4) //condicion que pregunta si es el quinto enemigo
+        {
+            enemigos.at(i)->MAS(500,350,180,1,2); //darle movmiento armonico simple
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+
+    }
+
+
+}
+
+void MainWindow::mover_enemigo3()
+{
+    //qDebug()<<"tamaño lista;"<<enemigos.size();
+    for(int i=0; i<enemigos.size();i++) //ciclo que lee toda la lista de enemigos
+    {
+        /* enemmigo 1 y 2 son las bolas que rebotan
+         * enemigo 3 y 4 las bolas con movimiento MCU
+         * enemigo 5 con el movimiento MAS*/
+
+        //qDebug() <<"velocidad: "<<enemigos.at(i)->getVel();
+        //qDebug() <<"velocidadx: "<<enemigos.at(i)->getVelx();
+        if(enemigos.at(i)->getVel()>90){enemigos.at(i)->setVel(90);} //condicion para que no supere cierta velocidad
+        if(enemigos.at(i)->getVelx()<30){enemigos.at(i)->setVelx(30);} //condicion para que no rebote con una velocidad menor
+
+        //mover a la derecha
+        if(enemigos.at(i)->getDir()==1) //condicion para preguntar por la direcion
+        {
+
+            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
+            {
+                enemigos.at(i)->setColumnas_fila(0,0);//actulizar el sprite
+            }
+            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativo
+            {
+                enemigos.at(i)->setColumnas_fila(0,84);// actualiza el sprite
+            }
+            enemigos.at(i)->actualizarposicion_derecha(); //actualiza la posicion
+            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
+            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
+            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
+        }
+
+        //mover a la izquierda
+        if(enemigos.at(i)->getDir()==2) //condicion para preguntar la direccion
+        {
+            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
+            {
+                enemigos.at(i)->setColumnas_fila(80,0); //actualiza el sprite
+            }
+            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativa
+            {
+                enemigos.at(i)->setColumnas_fila(80,84); //actualizar el sprite
+            }
+            enemigos.at(i)->actualizarposicion_izquierda(); //actualiza la posicion
+            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
+            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
+            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
+        }
+
+
+        if(i==2) //condicion que pregunta si es el tercer enemigo
+        {
+            enemigos.at(i)->MCU(300,400,200,-1.5,0); //darle movimiento circular uniforme
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==3) //condicion que pregunta si es el cuarto enemigo
+        {
+            enemigos.at(i)->MCU(700,400,200,-1.5,-3.1416); //darle el omvimiento circular uniforme
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==4) //condicion que pregunta si es el quinto enemigo
+        {
+            enemigos.at(i)->MAS(500,350,240,1,2); //darle movmiento armonico simple
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+
+        if(i==5) //condicion que pregunta si es el sexto enemigo
+        {
+            enemigos.at(i)->MAS(250,850,700,0.8,3);
+        }
+
+        if(i==6) //condicion que pregunta si es el sexto enemigo
+        {
+            enemigos.at(i)->MAS(750,850,700,0.8,3);
+        }
+
+    }
+}
+
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
@@ -237,7 +405,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
-            timere->stop();
+
              timer->stop();
             QString txt;
             txt="Felicidades has recuperado el tesoro";
@@ -276,7 +444,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
-            timere->stop();
+
             timer->stop();
             QString txt;
             txt="Felicidades has recuperado el tesoro";
@@ -316,7 +484,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
-            timere->stop();
+
             timer->stop();
             QString txt;
             txt="Felicidades has recuperado el tesoro";
@@ -366,7 +534,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 level3();
             }
             if(monedas.size()==NULL && nivel==3){
-                timere->stop();
+
                  timer->stop();
                 QString txt;
                 txt="Felicidades has recuperado el tesoro";
@@ -405,7 +573,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 level3();
             }
             if(monedas.size()==NULL && nivel==3){
-                timere->stop();
                 timer->stop();
                 QString txt;
                 txt="Felicidades has recuperado el tesoro";
@@ -445,7 +612,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 level3();
             }
             if(monedas.size()==NULL && nivel==3){
-                timere->stop();
                 timer->stop();
                 QString txt;
                 txt="Felicidades has recuperado el tesoro";
@@ -514,12 +680,19 @@ void MainWindow::level1()
     v_limit = 500;
 
     timer = new QTimer(this);
+    timerenemigo = new QTimer; //creo el Qtimer
+    timerenemigo2 = new QTimer; //creo el Qtimer
+    timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
     muro4 = new pared(3,100,-997,-200);
     muro3 = new pared(3,100,0,-200);
     scene->setSceneRect(0,0,h_limit,v_limit);
+
+    timerenemigo->stop(); //parar el timer del nivel 2
+    timerenemigo2->stop();
+    timerenemigo3->stop();
 
     view->show();
     view->setScene(scene);
@@ -533,13 +706,42 @@ void MainWindow::level1()
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
         monedas.removeAt(i);}
-
+    //jugador o jugadores
     crear_jugador();
-    enemigo =new grafenemigo;
-    enemigo->actualizar(v_limit);
-    enemigo2 =new grafenemigo;
-    enemigo2->actualizar(v_limit);
-    enemigo2->setPos(70,460);
+    //enemigo 1
+    bola1 = new enemigo(500,-350,260,260); //creo enemigo 1
+    bola1->setImagen(2); //selecionar imagen
+    bola1->setScale(0.2);//cambiar tamaño
+    enemigos.push_back(bola1); //agrego enemigo 1 a la lista de enemigos
+    scene->addItem(enemigos.at(0)); //añado enemigo 1 a la escena
+
+    //enemigo 2
+    bola2 = new enemigo(500,-350,260,260); //creo enemigo 2
+    bola2->setImagen(2); //seleccionar la imagen
+    bola2->setScale(0.2); //cambiar tamaño
+    enemigos.push_back(bola2); //agrego enemigo 2 a la lista de enemigos
+    scene->addItem(enemigos.at(1)); //añado enemigo 2 a la escena
+
+    //enemigo 3
+    bola3 = new enemigo(500,-350,260,260); //creo enemigo 3
+    bola3->setImagen(2); //selecionar imagen
+    bola3->setScale(0.2); //cambiar tamaño
+    enemigos.push_back(bola3); //agrego enemigo 3 a la lista de enemigos
+    scene->addItem(enemigos.at(2)); //añado enemigo 3 a la escena
+
+    //enemigo 4
+    bola4 = new enemigo(300,-10,260,260); //creo enemigo 4
+    bola4->setImagen(2); //sleecionar imagen
+    bola4->setScale(0.2); //cambiar tamaño cierra derecha
+    enemigos.push_back(bola4); //agrego enemigo 4 a la lista de enemigos
+    scene->addItem(enemigos.at(3)); //añado enemigo 4 a la escena
+
+    //enemigo 5
+    bola5 = new enemigo(500,-170,260,260); //creo enemigo 5
+    bola5->setImagen(2); //seleccionar imagen
+    bola5->setScale(0.2); //cambiar tamaño cierra mas
+    enemigos.push_back(bola5); //agrego enemigo 4 a la lista de enemigos
+    scene->addItem(enemigos.at(4)); //añado enemigo 4 a la escena
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
     char linea[20];
@@ -595,14 +797,11 @@ void MainWindow::level1()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-    scene->addItem(enemigo);
-    scene->addItem(enemigo2);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
-    timere = new QTimer();
-    connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
-    timere->start(3);
+    connect(timerenemigo,SIGNAL(timeout()),this,SLOT(mover_enemigo()));
+    timerenemigo->start(12);
 }
 
 void MainWindow::level2()
@@ -643,6 +842,9 @@ void MainWindow::level2()
     v_limit = 500;
 
     timer = new QTimer(this);
+    timerenemigo = new QTimer; //creo el Qtimer
+    timerenemigo2 = new QTimer; //creo el Qtimer
+    timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
@@ -664,11 +866,6 @@ void MainWindow::level2()
         monedas.removeAt(i);}
 
     crear_jugador();
-    enemigo =new grafenemigo;
-    enemigo->actualizar(v_limit);
-    enemigo2 =new grafenemigo;
-    enemigo2->actualizar(v_limit);
-    enemigo2->setPos(70,460);
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords2.txt");
     char linea[20];
@@ -724,14 +921,9 @@ void MainWindow::level2()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-    scene->addItem(enemigo);
-    scene->addItem(enemigo2);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
-    timere = new QTimer();
-    connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
-    timere->start(3);
 }
 
 void MainWindow::level3()
@@ -772,6 +964,9 @@ void MainWindow::level3()
     v_limit = 500;
 
     timer = new QTimer(this);
+    timerenemigo = new QTimer; //creo el Qtimer
+    timerenemigo2 = new QTimer; //creo el Qtimer
+    timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
@@ -793,11 +988,6 @@ void MainWindow::level3()
         monedas.removeAt(i);}
 
     crear_jugador();
-    enemigo =new grafenemigo;
-    enemigo->actualizar(v_limit);
-    enemigo2 =new grafenemigo;
-    enemigo2->actualizar(v_limit);
-    enemigo2->setPos(70,460);
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords3.txt");
     char linea[20];
@@ -853,20 +1043,17 @@ void MainWindow::level3()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-    scene->addItem(enemigo);
-    scene->addItem(enemigo2);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
-    timere = new QTimer();
-    connect(timere,SIGNAL(timeout()),this,SLOT(moveenemy()));
-    timere->start(3);
 }
 
 void MainWindow::destructorlevel1()
 {
     delete timer;
-    delete timere;
+    delete timerenemigo;
+    delete timerenemigo2;
+    delete timerenemigo3;
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
@@ -889,116 +1076,7 @@ void MainWindow::crear_jugador()
 }
 
 
-void MainWindow::moveenemy()
-{
-    enemy * c = enemigo->getEsf();
-    enemy* k=enemigo2->getEsf();
 
-    //    if(enemigo->x() < personaje->x()){
-    //        c->set_vel(5,c->getVY(),c->getPX(),c->getPY());
-    //        if(enemigo->collidesWithItem(muro1)){
-    //            c->set_vel(-5,c->getVY(),c->getPX(),c->getPY());
-    //        }
-    //        if(enemigo->collidesWithItem(muro2)){
-    //            c->set_vel(-5,c->getVY(),c->getPX(),c->getPY());
-    //        }
-    //    }
-    //    else if(enemigo->x() > personaje->x()){
-    //        c->set_vel(-5,c->getVY(),c->getPX(),c->getPY());
-    //        if(enemigo->collidesWithItem(muro1)){
-    //            c->set_vel(5,c->getVY(),c->getPX(),c->getPY());
-    //        }
-    //        if(enemigo->collidesWithItem(muro2)){
-    //            c->set_vel(5,c->getVY(),c->getPX(),c->getPY());
-    //        }
-    //    }
-    c->set_vel(movi,c->getVY(),c->getPX(),c->getPY());
-    if(enemigo->collidesWithItem(muro4)){
-      c->set_vel(movi,c->getVY(),25,c->getPY());
-    }
-    if(enemigo->collidesWithItem(muro3)){
-      c->set_vel(movi,c->getVY(),975,c->getPY());
-    }
-    if(enemigo->collidesWithItem(muro2)){
-        choques+=1;
-        if(choques%2==0 && choques!=0){
-            choques-=2;
-            c->set_vel(c->getVX(),c->getVY(),c->getPX(),459);
-            movi=5;
-        }else{
-            c->set_vel(c->getVX(),c->getVY(),932,459);
-            movi=-5;
-        }
-    }
-    if(enemigo->collidesWithItem(muro1)){
-        choques+=1;
-        if(choques%2==0 && choques!=0){
-            choques-=2;
-            movi=-5;
-            c->set_vel(c->getVX(),c->getVY(),c->getPX(),459);
-
-        }else{
-            movi=5;
-            c->set_vel(c->getVX(),c->getVY(),70,459);
-        }
-    }
-    k->set_vel(movi2,k->getVY(),k->getPX(),k->getPY());
-    if(enemigo2->collidesWithItem(muro4)){
-      k->set_vel(movi2,k->getVY(),25,k->getPY());
-    }
-    if(enemigo2->collidesWithItem(muro3)){
-      k->set_vel(movi2,k->getVY(),975,k->getPY());
-    }
-    if(enemigo2->collidesWithItem(muro2)){
-        choques+=1;
-        if(choques%2==0 && choques!=0){
-            choques-=2;
-            k->set_vel(k->getVX(),k->getVY(),k->getPX(),459);
-            movi2=5;
-        }else{
-            k->set_vel(k->getVX(),k->getVY(),932,459);
-            movi2=-5;
-        }
-    }
-    if(enemigo2->collidesWithItem(muro1)){
-        choques+=1;
-        if(choques%2==0 && choques!=0){
-            choques-=2;
-            movi2=-5;
-            k->set_vel(k->getVX(),k->getVY(),k->getPX(),459);
-
-        }else{
-            movi2=5;
-            k->set_vel(k->getVX(),k->getVY(),70,459);
-        }
-    }
-
-
-
-
-
-
-//    if(enemigo->y() < personaje->y()){
-//        enemigo->down();
-//        if(enemigo->collidesWithItem(muro1)){
-//            enemigo->up();
-//        }
-//        if(enemigo->collidesWithItem(muro2)){
-//            enemigo->up();
-//        }
-//    }
-//    else if(enemigo->y() > personaje->y()){
-//        enemigo->up();
-//        if(enemigo->collidesWithItem(muro1)){
-//            enemigo->down();
-//        }
-//        if(enemigo->collidesWithItem(muro2)){
-//            enemigo->down();
-//        }
-//    }
-    //enemigo->setPos(enemigo->posx,enemigo->posy);
-
-}
 QList<moneda *> MainWindow::eliminarMoneda(QList<moneda *> monedas, int pos)
 {
     QList<moneda *> aux;
@@ -1263,7 +1341,9 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_Play_clicked()
 {
     timer->start(3);
-    timere->start(3);
+    timerenemigo->start(12);
+    timerenemigo2->start(12);
+    timerenemigo3->start(12);
     ui->Pausa->show();
     ui->Play->hide();
 }
@@ -1271,7 +1351,9 @@ void MainWindow::on_Play_clicked()
 void MainWindow::on_Pausa_clicked()
 {
     timer->stop();
-    timere->stop();
+    timerenemigo->stop();
+    timerenemigo2->stop();
+    timerenemigo3->stop();
     ui->Pausa->hide();
     ui->Play->show();
 }
@@ -1410,7 +1492,7 @@ void MainWindow::on_actionEliminar_triggered()
 void MainWindow::on_actionControles_triggered()
 {
     timer->stop();
-    timere->stop();
+
     QString txt;
     txt="para poder ver las propiedades de los planetas \n"
         "las cuales son:\n"
@@ -1423,13 +1505,13 @@ void MainWindow::on_actionControles_triggered()
         "cuales podra ver de una manera facil y sencilla.\n";
     QMessageBox::about(this,"Instrucciones",txt);
     timer->start(3);
-    timere->start(3);
+
 }
 
 void MainWindow::on_actionInstrucciones_triggered()
 {
     timer->stop();
-    timere->stop();
+
     QString txt;
     txt="para poder ver las propiedades de los planetas \n"
         "las cuales son:\n"
@@ -1442,5 +1524,5 @@ void MainWindow::on_actionInstrucciones_triggered()
         "cuales podra ver de una manera facil y sencilla.\n";
     QMessageBox::about(this,"Instrucciones",txt);
     timer->start(3);
-    timere->start(3);
+
 }

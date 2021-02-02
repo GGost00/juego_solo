@@ -10,7 +10,6 @@ CONFIG += c++11
 
 SOURCES += \
     enemigo.cpp \
-    grafenemigo.cpp \
     grafjugador.cpp \
     jugador.cpp \
     main.cpp \
@@ -20,7 +19,6 @@ SOURCES += \
 
 HEADERS += \
     enemigo.h \
-    grafenemigo.h \
     grafjugador.h \
     jugador.h \
     mainwindow.h \
