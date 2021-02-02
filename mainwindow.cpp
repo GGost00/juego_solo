@@ -232,42 +232,6 @@ void MainWindow::mover_enemigo2()
         if(enemigos.at(i)->getVel()>60){enemigos.at(i)->setVel(60);} //condicion para que no supere cierta velocidad
         if(enemigos.at(i)->getVelx()<30){enemigos.at(i)->setVelx(30);} //condicion para que no rebote con una velocidad menor
 
-        //mover a la derecha
-        if(enemigos.at(i)->getDir()==1) //condicion para preguntar por la direcion
-        {
-
-            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
-            {
-                enemigos.at(i)->setColumnas_fila(0,0);//actulizar el sprite
-            }
-            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativo
-            {
-                enemigos.at(i)->setColumnas_fila(0,84);// actualiza el sprite
-            }
-            enemigos.at(i)->actualizarposicion_derecha(); //actualiza la posicion
-            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
-            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
-            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
-        }
-
-        //mover a la izquierda
-        if(enemigos.at(i)->getDir()==2) //condicion para preguntar la direccion
-        {
-            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
-            {
-                enemigos.at(i)->setColumnas_fila(80,0); //actualiza el sprite
-            }
-            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativa
-            {
-                enemigos.at(i)->setColumnas_fila(80,84); //actualizar el sprite
-            }
-            enemigos.at(i)->actualizarposicion_izquierda(); //actualiza la posicion
-            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
-            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
-            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
-        }
-
-
 
         if(i==2) //condicion que pregunta si es el tercer enemigo
         {
@@ -307,68 +271,36 @@ void MainWindow::mover_enemigo3()
         if(enemigos.at(i)->getVel()>90){enemigos.at(i)->setVel(90);} //condicion para que no supere cierta velocidad
         if(enemigos.at(i)->getVelx()<30){enemigos.at(i)->setVelx(30);} //condicion para que no rebote con una velocidad menor
 
-        //mover a la derecha
-        if(enemigos.at(i)->getDir()==1) //condicion para preguntar por la direcion
-        {
-
-            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
-            {
-                enemigos.at(i)->setColumnas_fila(0,0);//actulizar el sprite
-            }
-            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativo
-            {
-                enemigos.at(i)->setColumnas_fila(0,84);// actualiza el sprite
-            }
-            enemigos.at(i)->actualizarposicion_derecha(); //actualiza la posicion
-            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
-            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
-            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
-        }
-
-        //mover a la izquierda
-        if(enemigos.at(i)->getDir()==2) //condicion para preguntar la direccion
-        {
-            if(enemigos.at(i)->getVely()>0) //condicion que pregunta si la velocidad e el eje y es positiva
-            {
-                enemigos.at(i)->setColumnas_fila(80,0); //actualiza el sprite
-            }
-            if(enemigos.at(i)->getVely()<0) //condicion que pregunta si la velocidad en el eje y es negativa
-            {
-                enemigos.at(i)->setColumnas_fila(80,84); //actualizar el sprite
-            }
-            enemigos.at(i)->actualizarposicion_izquierda(); //actualiza la posicion
-            enemigos.at(i)->actualizarvelocidad(); //actualiza la velocidad
-            enemigos.at(i)->setX(enemigos.at(i)->getPosx()); //setea la posicion en x
-            enemigos.at(i)->setY(-enemigos.at(i)->getPosy());//setea la posicion en y
-        }
 
 
         if(i==2) //condicion que pregunta si es el tercer enemigo
         {
-            enemigos.at(i)->MCU(300,400,200,-1.5,0); //darle movimiento circular uniforme
-            enemigos.at(i)->rotar(2); //rotar imagen
+            enemigos.at(i)->MCU(250,275,100,-1.5,0); //darle movimiento circular uniforme
+
         }
 
         if(i==3) //condicion que pregunta si es el cuarto enemigo
         {
-            enemigos.at(i)->MCU(700,400,200,-1.5,-3.1416); //darle el omvimiento circular uniforme
-            enemigos.at(i)->rotar(2); //rotar imagen
+            enemigos.at(i)->MCU(750,275,100,-1.5,-3.1416); //darle el omvimiento circular uniforme
+
         }
 
         if(i==4) //condicion que pregunta si es el quinto enemigo
         {
-            enemigos.at(i)->MAS(500,350,240,1,2); //darle movmiento armonico simple
+            enemigos.at(i)->MAS(500,250,200,1,2); //darle movmiento armonico simple
             enemigos.at(i)->rotar(2); //rotar imagen
         }
 
         if(i==5) //condicion que pregunta si es el sexto enemigo
         {
-            enemigos.at(i)->MAS(250,850,700,0.8,3);
+            enemigos.at(i)->MAS(250,450,400,0.8,3);
+            enemigos.at(i)->rotar(2); //rotar imagen
         }
 
         if(i==6) //condicion que pregunta si es el sexto enemigo
         {
-            enemigos.at(i)->MAS(750,850,700,0.8,3);
+            enemigos.at(i)->MAS(750,450,400,0.8,3);
+            enemigos.at(i)->rotar(2); //rotar imagen
         }
 
     }
@@ -864,8 +796,45 @@ void MainWindow::level2()
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
         monedas.removeAt(i);}
+    for(int i=0;i<enemigos.size();i++){ //ciclo que recorre toda la lista de enemigos
+        enemigos.removeAt(i);
+    }
 
     crear_jugador();
+    //enemigo 6
+    bola6 = new enemigo(200,-450,81,82,30,0); //creo enemigo 1
+    bola6->setImagen(2); //selecionar imagen
+    bola6->setScale(0.8);//cambiar tamaño
+    enemigos.push_back(bola6); //agrego enemigo 1 a la lista de enemigos
+    scene->addItem(enemigos.at(0)); //añado enemigo 1 a la escena
+
+    //enemigo 7
+    bola7 = new enemigo(975,-450,81,82,30,180); //creo enemigo 6
+    bola7->setImagen(2); //seleccionar la imagen
+    bola7->setScale(0.8); //cambiar tamaño
+    enemigos.push_back(bola7); //agrego enemigo 6 a la lista de enemigos
+    scene->addItem(enemigos.at(1)); //añado enemigo 6 a la escena
+
+    //enemigo 8
+    bola8 = new enemigo(250,-450,260,260); //creo enemigo 3
+    bola8->setImagen(2); //selecionar imagen
+    bola8->setScale(0.3); //cambiar tamaño
+    enemigos.push_back(bola8); //agrego enemigo 3 a la lista de enemigos
+    scene->addItem(enemigos.at(2)); //añado enemigo 3 a la escena
+
+    //enemigo 9
+    bola9 = new enemigo(750,-450,260,260); //creo enemigo 4
+    bola9->setImagen(2); //sleecionar imagen
+    bola9->setScale(0.3); //cambiar tamaño
+    enemigos.push_back(bola9); //agrego enemigo 4 a la lista de enemigos
+    scene->addItem(enemigos.at(3)); //añado enemigo 4 a la escena
+
+    //enemigo 10
+    bola10 = new enemigo(500,-170,260,260); //creo enemigo 5
+    bola10->setImagen(2); //seleccionar imagen
+    bola10->setScale(0.6); //cambiar tamaño
+    enemigos.push_back(bola10); //agrego enemigo 4 a la lista de enemigos
+    scene->addItem(enemigos.at(4)); //añado enemigo 4 a la escena
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords2.txt");
     char linea[20];
@@ -924,6 +893,8 @@ void MainWindow::level2()
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
+    connect(timerenemigo2,SIGNAL(timeout()),this,SLOT(mover_enemigo2())); //conecto el timer al movimiento del enemigo
+    timerenemigo2->start(12);
 }
 
 void MainWindow::level3()
@@ -986,8 +957,59 @@ void MainWindow::level3()
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
         monedas.removeAt(i);}
+    for(int i=0;i<enemigos.size();i++){ //ciclo que recorre toda la lista de enemigos
+        enemigos.removeAt(i);
+    }
 
     crear_jugador();
+    //enemigo 11
+    bola11 = new enemigo(25,-200,81,82,30,0); //creo enemigo 11
+    bola11->setImagen(2); //selecionar imagen
+    bola11->setScale(0.6);//cambiar tamaño
+    enemigos.push_back(bola11); //agrego enemigo 11 a la lista de enemigos
+    scene->addItem(enemigos.at(0)); //añado enemigo 11 a la escena
+
+    //enemigo 12
+    bola12 = new enemigo(975,-200,81,82,30,180); //creo enemigo 12
+    bola12->setImagen(2); //seleccionar la imagen
+    bola12->setScale(0.6); //cambiar tamaño
+    enemigos.push_back(bola12); //agrego enemigo 12 a la lista de enemigos
+    scene->addItem(enemigos.at(1)); //añado enemigo 12 a la escena
+
+    //enemigo 13..
+    bola13 = new enemigo(500,-350,512,512); //creo enemigo 13
+    bola13->setImagen(1); //selecionar imagen
+    bola13->setScale(0.1); //cambiar tamaño
+    enemigos.push_back(bola13); //agrego enemigo 13 a la lista de enemigos
+    scene->addItem(enemigos.at(2)); //añado enemigo 13 a la escena
+
+    //enemigo 14
+    bola14 = new enemigo(750,-350,512,512); //creo enemigo 14
+    bola14->setImagen(1); //sleecionar imagen
+    bola14->setScale(0.1); //cambiar tamaño
+    enemigos.push_back(bola14); //agrego enemigo 14 a la lista de enemigos
+    scene->addItem(enemigos.at(3)); //añado enemigo 14 a la escena
+
+    //enemigo 15
+    bola15 = new enemigo(500,-170,260,260); //creo enemigo 15
+    bola15->setImagen(2); //seleccionar imagen
+    bola15->setScale(0.2); //cambiar tamaño
+    enemigos.push_back(bola15); //agrego enemigo 4 a la lista de enemigos
+    scene->addItem(enemigos.at(4)); //añado enemigo 4 a la escena
+
+    //enemigo 16
+    bola16 = new enemigo(250,-170,1024,576); //creo enemigo 16
+    bola16->setImagen(3); //seleccionar imagen
+    bola16->setScale(0.1); //cambiar tamaño
+    enemigos.push_back(bola16); //agrego enemigo 16 a la lista de enemigos
+    scene->addItem(enemigos.at(5)); //añado enemigo 16 a la escena
+
+    //enemigo 17
+    bola17 = new enemigo(750,-170,1024,576); //creo enemigo 17
+    bola17->setImagen(3); //seleccionar imagen
+    bola17->setScale(0.1); //cambiar tamaño
+    enemigos.push_back(bola17); //agrego enemigo 17 a la lista de enemigos
+    scene->addItem(enemigos.at(6)); //añado enemigo 17 a la escena
 
     Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords3.txt");
     char linea[20];
@@ -1046,6 +1068,8 @@ void MainWindow::level3()
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
+    connect(timerenemigo3,SIGNAL(timeout()),this,SLOT(mover_enemigo3())); //conecto el timer al movimiento del enemigo
+    timerenemigo3->start(12);
 }
 
 void MainWindow::destructorlevel1()
@@ -1054,6 +1078,14 @@ void MainWindow::destructorlevel1()
     delete timerenemigo;
     delete timerenemigo2;
     delete timerenemigo3;
+    for(int i=0;i<enemigos.size();i++){ //ciclo que recorre toda la lista de enemigos
+        enemigos.removeAt(i);
+    }
+    for(int i=0;i<enemigos.size();i++){ //ciclo que recorre toda la lista de enemigos
+        enemigos.removeAt(i);
+    }
+    for(int i=0;i<paredes.size();i++){
+        paredes.removeAt(i);}
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
@@ -1298,7 +1330,7 @@ contra=ui->contrasena->text();
                 Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<nivel<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<py1<<" "<<px2<<" "<<py2<<endl;
             }
             else{
-                Temp<<Nnames<<" "<<clave<<" "<<nivel<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
+                Temp<<Nnames<<" "<<clave<<" "<<nivel_<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
             }
             leer>>Nnames;
 

@@ -106,7 +106,7 @@ void enemigo::setImagen(int imagen_)
     }
     if(imagen_==3)
     {
-        pixmap = new QPixmap(":/recursos/imagenes/sierra_sangre.png");
+        pixmap = new QPixmap(":/recursos/imagenes/pngwing.com.png");
     }
     if(imagen_==4)
     {
