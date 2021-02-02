@@ -34,6 +34,7 @@ void cuerpograf::setEscala(float s)
     escala = s;
 }
 
+
 void cuerpograf::actualizar(float v_lim)
 {
     esf->actualizar();

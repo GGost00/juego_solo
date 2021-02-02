@@ -110,11 +110,7 @@ void enemigo::setImagen(int imagen_)
     }
     if(imagen_==4)
     {
-        pixmap = new QPixmap(":/imagenes/diablo.png");
-    }
-    if(imagen_==5)
-    {
-        pixmap = new QPixmap(":/imagenes/bola_fuego.png");
+        pixmap = new QPixmap(":/recursos/imagenes/pngwing1.com (1).png");
     }
 }
 

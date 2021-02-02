@@ -11,7 +11,7 @@ int num_jugadores;
 QString user,contra,posiciones;
 int puntaje=0;
 int pn=0;
-int vida1=500,vida2=500;
+int vida1=5,vida2=5;
 int px1=32,py1=150,px2=32,py2=150;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -88,6 +88,12 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
         if(personaje->collidesWithItem(paredes.at(i))){
           b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
+    for(int i=0;i<enemigos.size();i++){
+        if(personaje->collidesWithItem(enemigos.at(i))){
+          b->set_vel(b->getVX(),b->getVY(),23,105);
+          vida1-=1;
+          ui->Vida->setText(QString::number(vida1));
+        }}
     if(vida1<0){
 
          timer->stop();
@@ -113,6 +119,12 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
         if(d->getPY()>v_limit-d->getR()){
             d->set_vel(d->getVX(),-1*d->getE()*d->getVY(),d->getPX(),v_limit-d->getR());
         }
+        for(int i=0;i<enemigos.size();i++){
+            if(personaje2->collidesWithItem(enemigos.at(i))){
+              d->set_vel(d->getVX(),d->getVY(),23,105);
+              vida2-=1;
+              ui->Vida2->setText(QString::number(vida2));
+            }}
         if(vida2<0){
 
              timer->stop();
@@ -155,11 +167,15 @@ void MainWindow::borderCollision(cuerpo *b)
         if(personaje->collidesWithItem(paredes.at(i))){
           b->set_vel(b->getVX(),0,b->getPX(),l+b->getPY());
         }}
-    for(int i=0;i<enemigos.size();i++){
-        if(personaje->collidesWithItem(enemigos.at(i))){
-          vida1-=1;
-          ui->Vida->setText(QString::number(vida1));
-        }}
+    if(num_jugadores==2){}else{
+        for(int i=0;i<enemigos.size();i++){
+            if(personaje->collidesWithItem(enemigos.at(i))){
+              b->set_vel(b->getVX(),b->getVY(),23,105);
+              vida1-=1;
+              ui->Vida->setText(QString::number(vida1));
+            }}
+    }
+
     if(vida1<0){
 
          timer->stop();
@@ -232,22 +248,31 @@ void MainWindow::mover_enemigo2()
         if(enemigos.at(i)->getVel()>60){enemigos.at(i)->setVel(60);} //condicion para que no supere cierta velocidad
         if(enemigos.at(i)->getVelx()<30){enemigos.at(i)->setVelx(30);} //condicion para que no rebote con una velocidad menor
 
-
+        if(i==0) //condicion que pregunta si es el primer enemigo
+        {
+            enemigos.at(i)->MCU(930,45,10,-1.5,0);
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
+        if(i==1) //condicion que pregunta si es el segundo enemigo
+        {
+            enemigos.at(i)->MCU(70,45,-10,1.5,0);
+            enemigos.at(i)->rotar(2); //rotar imagen
+        }
         if(i==2) //condicion que pregunta si es el tercer enemigo
         {
-            enemigos.at(i)->MCU(300,450,150,-1.5,0); //darle movimiento circular uniforme
+            enemigos.at(i)->MAS(250,250,180,1,2); //darle movmiento armonico simple
             enemigos.at(i)->rotar(2); //rotar imagen
         }
 
         if(i==3) //condicion que pregunta si es el cuarto enemigo
         {
-            enemigos.at(i)->MCU(700,450,150,-1.5,-3.1416); //darle el omvimiento circular uniforme
+            enemigos.at(i)->MAS(750,250,180,1,2); //darle movmiento armonico simple
             enemigos.at(i)->rotar(2); //rotar imagen
         }
 
         if(i==4) //condicion que pregunta si es el quinto enemigo
         {
-            enemigos.at(i)->MAS(500,350,180,1,2); //darle movmiento armonico simple
+            enemigos.at(i)->MAS(500,250,-180,1,2); //darle movmiento armonico simple
             enemigos.at(i)->rotar(2); //rotar imagen
         }
 
@@ -325,15 +350,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
-            vida1=250;
-            vida2=250;
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
-            vida1=250;
-            vida2=250;
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -364,15 +385,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
-            vida1=250;
-            vida2=250;
+
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
-            vida1=250;
-            vida2=250;
+
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -404,15 +423,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
-            vida1=250;
-            vida2=250;
+
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
-            vida1=250;
-            vida2=250;
+
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -454,15 +471,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
                 nivel+=1;
-                vida1=250;
-                vida2=250;
+
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
                 nivel+=1;
-                vida1=250;
-                vida2=250;
+
                 level3();
             }
             if(monedas.size()==NULL && nivel==3){
@@ -493,14 +508,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
                 nivel+=1;
-                vida1=250;
-                vida2=250;
+
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
-                vida1=250;
-                vida2=250;
+
                 nivel+=1;
                 level3();
             }
@@ -531,15 +544,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
-                vida1=250;
-                vida2=250;
+
                 nivel+=1;
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
-                vida1=250;
-                vida2=250;
+
                 nivel+=1;
                 level3();
             }
@@ -802,16 +813,16 @@ void MainWindow::level2()
 
     crear_jugador();
     //enemigo 6
-    bola6 = new enemigo(200,-450,81,82,30,0); //creo enemigo 1
-    bola6->setImagen(2); //selecionar imagen
-    bola6->setScale(0.8);//cambiar tamaño
+    bola6 = new enemigo(250,-450,512,512); //creo enemigo 1
+    bola6->setImagen(4); //selecionar imagen
+    bola6->setScale(0.1);//cambiar tamaño
     enemigos.push_back(bola6); //agrego enemigo 1 a la lista de enemigos
     scene->addItem(enemigos.at(0)); //añado enemigo 1 a la escena
 
     //enemigo 7
-    bola7 = new enemigo(975,-450,81,82,30,180); //creo enemigo 6
-    bola7->setImagen(2); //seleccionar la imagen
-    bola7->setScale(0.8); //cambiar tamaño
+    bola7 = new enemigo(250,-450,512,512); //creo enemigo 6
+    bola7->setImagen(4); //seleccionar la imagen
+    bola7->setScale(0.1); //cambiar tamaño
     enemigos.push_back(bola7); //agrego enemigo 6 a la lista de enemigos
     scene->addItem(enemigos.at(1)); //añado enemigo 6 a la escena
 
@@ -1524,7 +1535,9 @@ void MainWindow::on_actionEliminar_triggered()
 void MainWindow::on_actionControles_triggered()
 {
     timer->stop();
-
+    timerenemigo->stop();
+    timerenemigo2->stop();
+    timerenemigo3->stop();
     QString txt;
     txt="para poder ver las propiedades de los planetas \n"
         "las cuales son:\n"
@@ -1537,13 +1550,17 @@ void MainWindow::on_actionControles_triggered()
         "cuales podra ver de una manera facil y sencilla.\n";
     QMessageBox::about(this,"Instrucciones",txt);
     timer->start(3);
-
+    timerenemigo->start(12);
+    timerenemigo2->start(12);
+    timerenemigo3->start(12);
 }
 
 void MainWindow::on_actionInstrucciones_triggered()
 {
     timer->stop();
-
+    timerenemigo->stop();
+    timerenemigo2->stop();
+    timerenemigo3->stop();
     QString txt;
     txt="para poder ver las propiedades de los planetas \n"
         "las cuales son:\n"
@@ -1556,5 +1573,7 @@ void MainWindow::on_actionInstrucciones_triggered()
         "cuales podra ver de una manera facil y sencilla.\n";
     QMessageBox::about(this,"Instrucciones",txt);
     timer->start(3);
-
+    timerenemigo->start(12);
+    timerenemigo2->start(12);
+    timerenemigo3->start(12);
 }

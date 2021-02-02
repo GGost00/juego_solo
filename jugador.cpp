@@ -2,6 +2,7 @@
 #include <math.h>
 #include <cmath>
 
+
 cuerpo::cuerpo(float posX_, float posY_, float velX_, float velY_, float masa_, float radio_, float K_, float e_)
 {
     PX = posX_; //pos en x

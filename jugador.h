@@ -19,6 +19,7 @@ private:
     float e; //Coefici                    }ente de restitucion
     float V; //vector de velocidad
     float dt; //delta tiempo
+
 public:
     cuerpo(float posX_,float posY_,float velX_,float velY_,float masa_,float radio_,float K_,float e_);
     ~cuerpo();
@@ -32,6 +33,7 @@ public:
     float getVY() const;
     float getE() const;
     void set_vel(float vx, float vy, float px, float py);
+
 };
 
 
