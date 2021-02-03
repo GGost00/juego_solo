@@ -1,25 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-int choques=-1;
-int movi=-5,movi2=5;
-int saltos=0;
-int l,L;
-int nivel=1;
-int dificultad=1;
-bool cargado=false;
-int num_jugadores;
-QString user,contra,posiciones;
-int puntaje=0;
-int pn=0;
-int vida1=10,vida2=10;
-int px1=32,py1=150,px2=32,py2=150;
+int saltos=0;//variable para saber cuantos saltos se da
+int l,L;//variable para saber si los personajes saltan y no trepar el muro
+int nivel=1;//variable para saber en que nivel estas
+bool cargado=false;//variable para saber que el .txt de los usuarios se cargo
+int num_jugadores;//variable para saber cuantos jugadores estan jugando
+QString user,contra;//strings que tienen el usuario y la contraseña ingresada
+int pn=0;//variable que tiene puntaje
+int vida1=10,vida2=10;//variable que tiene las vidas
+int px1=32,py1=150,px2=32,py2=150;//variable con las posiciones de los jugadores
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     srand(time(NULL));
     ui->setupUi(this);
-
+    /*enesta parte se muestra todo lo del menu principal los botones nesesarios para registrar o cargar
+    una cuenta y poder seguir en el nivel que se termino eso si si se gusrda la partida*/
     ui->cargarpartida->show();
     ui->nuevapartida->show();
     ui->un_jugador->hide();
@@ -59,7 +56,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::actualizar()
 {
-
+/*esta funcion se utiliza para actualizar los movimientos de el o los personajes */
         personaje->actualizar(v_limit);
         borderCollision(personaje->getEsf());
         if(num_jugadores==2){
@@ -72,6 +69,7 @@ void MainWindow::actualizar()
 
 void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
 {
+    /*en esta funcion se evaluan las coliciones de los personajes cuando se juega en duo*/
     if(b->getPX()<b->getR()){
         b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
 
@@ -151,6 +149,7 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
 
 void MainWindow::borderCollision(cuerpo *b)
 {
+    /*en esta funcion se evaluan las coliciones cuando se juega solo */
     if(b->getPX()<b->getR()){
         b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
 
@@ -191,23 +190,23 @@ void MainWindow::borderCollision(cuerpo *b)
 
 void MainWindow::mover_enemigo()
 {
+    /*en esta funcion se dan los movimientos de los enemigos
+    en el nivel 1*/
     for(int i=0; i<enemigos.size();i++) //ciclo que lee toda la lista de enemigos
     {
-        /* enemmigo 1 y 2 son las bolas que rebotan
-         * enemigo 3 y 4 las bolas con movimiento MCU
-         * enemigo 5 con el movimiento MAS*/
+         /* los enemigos 1 , 2 , 3 , 4 y 5 se mueven con el movimiento MAS */
 
         //qDebug() <<"velocidad: "<<enemigos.at(i)->getVel();
         //qDebug() <<"velocidadx: "<<enemigos.at(i)->getVelx();
         if(enemigos.at(i)->getVel()>70){enemigos.at(i)->setVel(70);} //condicion para que no supere cierta velocidad
         if(enemigos.at(i)->getVelx()<20){enemigos.at(i)->setVelx(20);} //condicion para que no rebote con una velocidad menor
 
-        if(i==0) //condicion que pregunta si es el tercer enemigo
+        if(i==0) //condicion que pregunta si es el primer enemigo
         {
             enemigos.at(i)->MAS(500,250,-120,1,2); //darle movimiento circular uniforme
             enemigos.at(i)->rotar(2); //rotar imagen
         }
-        if(i==1) //condicion que pregunta si es el tercer enemigo
+        if(i==1) //condicion que pregunta si es el segundo enemigo
         {
             enemigos.at(i)->MAS(800,90,-120,1,1); //darle movimiento circular uniforme
             enemigos.at(i)->rotar(2); //rotar imagen
@@ -238,11 +237,12 @@ void MainWindow::mover_enemigo()
 
 void MainWindow::mover_enemigo2()
 {
+    /*en esta funcion se dan los movimientos de los enemigos
+    en el nivel 2*/
     for(int i=0; i<enemigos.size();i++) //ciclo que lee toda la lista de enemigos
     {
-        /* enemmigo 1 y 2 son las bolas que rebotan
-         * enemigo 3 y 4 las bolas con movimiento MCU
-         * enemigo 5 con el movimiento MAS*/
+         /* enemigo 1 y 2 las bolas con movimiento MCU
+          enemigo 3 , 4 y 5 con el movimiento MAS*/
 
         //qDebug() <<"velocidad: "<<enemigos.at(i)->getVel();
         //qDebug() <<"velocidadx: "<<enemigos.at(i)->getVelx();
@@ -285,12 +285,13 @@ void MainWindow::mover_enemigo2()
 
 void MainWindow::mover_enemigo3()
 {
+    /*en esta funcion se dan los movimientos de los enemigos
+    en el nivel 3*/
     //qDebug()<<"tamaño lista;"<<enemigos.size();
     for(int i=0; i<enemigos.size();i++) //ciclo que lee toda la lista de enemigos
     {
-        /* enemmigo 1 y 2 son las bolas que rebotan
-         * enemigo 3 y 4 las bolas con movimiento MCU
-         * enemigo 5 con el movimiento MAS*/
+         /* enemigo 3 y 4  con movimiento MCU
+         * enemigo 5 , 6 y 7 con el movimiento MAS*/
 
         //qDebug() <<"velocidad: "<<enemigos.at(i)->getVel();
         //qDebug() <<"velocidadx: "<<enemigos.at(i)->getVelx();
@@ -323,7 +324,7 @@ void MainWindow::mover_enemigo3()
             enemigos.at(i)->rotar(2); //rotar imagen
         }
 
-        if(i==6) //condicion que pregunta si es el sexto enemigo
+        if(i==6) //condicion que pregunta si es el septimo enemigo
         {
             enemigos.at(i)->MAS(750,450,400,0.8,3);
             enemigos.at(i)->rotar(2); //rotar imagen
@@ -335,10 +336,12 @@ void MainWindow::mover_enemigo3()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    /*esta es la funcion que evalua si se hunde una tecla*/
     cuerpo * b = personaje->getEsf();
 
     if(event->key() == Qt::Key_D){
         b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
+        //se evalua si toma una moneda y suma un punto si lo hace
         for(int i=0;i<monedas.size();i++){
             if(personaje->collidesWithItem(monedas.at(i))){
                 scene->removeItem(monedas.at(i));
@@ -348,6 +351,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             }
         }
+        //se evalua si se comio todas las monedas y pasa de nivel
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
@@ -355,6 +359,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             vida2+=3;
             level2();
         }
+                //se evalua si se comio todas las monedas y pasa de nivel
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
@@ -362,6 +367,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             vida2+=3;
             level3();
         }
+                //se evalua si se comio todas las monedas y gana el juego
         if(monedas.size()==NULL && nivel==3){
 
              timer->stop();
@@ -377,6 +383,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             b->set_vel(-10,b->getVY(),b->getPX(),b->getPY());
         }
     }
+    //se aplica lo mismo que en la tecla anterior
     if(event->key() == Qt::Key_A){
         b->set_vel(-10,b->getVY(),b->getPX(),b->getPY());
         for(int i=0;i<monedas.size();i++){
@@ -416,6 +423,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
         }
     }
+        //se aplica lo mismo que en la tecla anterior
     if(event->key() == Qt::Key_W){
         saltos+=1;
 
@@ -466,6 +474,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     if (num_jugadores==2){
         cuerpo * d = personaje2->getEsf();
+            //se aplica lo mismo que en la tecla anterior si se juega con dos jugadores
         if(event->key() == Qt::Key_K){
             d->set_vel(10,d->getVY(),d->getPX(),d->getPY());
             for(int i=0;i<monedas.size();i++){
@@ -507,6 +516,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }
         }
         if(event->key() == Qt::Key_H){
+                        //se aplica lo mismo que en la tecla anterior si se juega con dos jugadores
             d->set_vel(-10,d->getVY(),d->getPX(),d->getPY());
             for(int i=0;i<monedas.size();i++){
                 if(personaje2->collidesWithItem(monedas.at(i))){
@@ -546,7 +556,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         }
         if(event->key() == Qt::Key_U){
             saltos+=1;
-
+            //se aplica lo mismo que en la tecla anterior si se juega con dos jugadores
             for(int i=0;i<monedas.size();i++){
                 if(personaje2->collidesWithItem(monedas.at(i))){
                     scene->removeItem(monedas.at(i));
@@ -591,6 +601,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }
 
         }
+        // se evalua si el personaje salta para cambiar el valor de direccion si choca con un muro
         if(event->key() != Qt::Key_W && event->key() != Qt::Key_U){
             L=1;
         }
@@ -602,7 +613,7 @@ if(event->key() != Qt::Key_W && event->key() != Qt::Key_U){
 
 void MainWindow::level1()
 {
-
+    //se esconden el menu principal y se muestra el resto
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
     ui->un_jugador->hide();
@@ -627,32 +638,36 @@ void MainWindow::level1()
     ui->Play->show();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vida1));
+
+    //se evalua si hay dos jugadores para mostrar la vida del segundo personaje
     if(num_jugadores==2){
             ui->Vida2->show();
             ui->Vida2->setText(QString::number(vida2));
     }
+    //se crean variables para leer los archivos que crean las paredes y las monedas
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
-
+    //se le dan valores para el ancho y el alto de la escena
     h_limit = 1000;
     v_limit = 500;
 
-    timer = new QTimer(this);
+    timer = new QTimer(this);// se crea Qtimer
     timerenemigo = new QTimer; //creo el Qtimer
     timerenemigo2 = new QTimer; //creo el Qtimer
     timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
-    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 1.png"));
+    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 1.png"));//se añade el fondo del nivel 1
+    //se generan paredes temporales
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
     muro4 = new pared(3,100,-997,-200);
     muro3 = new pared(3,100,0,-200);
-    scene->setSceneRect(0,0,h_limit,v_limit);
+    scene->setSceneRect(0,0,h_limit,v_limit);//se crea un contorno a la escena
 
-    timerenemigo->stop(); //parar el timer del nivel 2
+    timerenemigo->stop();
     timerenemigo2->stop();
     timerenemigo3->stop();
-
+//se le da forma a lo relacionado con el QGraphicsView
     view->show();
     view->setScene(scene);
     ui->centralwidget->adjustSize();
@@ -661,6 +676,7 @@ void MainWindow::level1()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //se eliminan las paredes y monedas que puedan quedar del nivel pasado
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
@@ -701,8 +717,8 @@ void MainWindow::level1()
     bola5->setScale(0.2); //cambiar tamaño cierra mas
     enemigos.push_back(bola5); //agrego enemigo 4 a la lista de enemigos
     scene->addItem(enemigos.at(4)); //añado enemigo 4 a la escena
-
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords.txt");
+//se añanen las paredes
+    Leer.open("../juego_solitario/coords.txt");
     char linea[20];
     Leer.getline(linea, sizeof(linea));
     while (!Leer.eof()) {
@@ -730,8 +746,8 @@ void MainWindow::level1()
         Leer.getline(linea, sizeof(linea));
     }
     Leer.close();
-
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money.txt");
+//se añaden las monedas
+    Leer.open("../juego_solitario/money.txt");
     char line[20];
     Leer.getline(line, sizeof(line));
     while (!Leer.eof()) {
@@ -756,7 +772,7 @@ void MainWindow::level1()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-
+//se crean los conects que actualizan los movimientos del jugador y de los enemigos
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
     connect(timerenemigo,SIGNAL(timeout()),this,SLOT(mover_enemigo()));
@@ -790,28 +806,32 @@ void MainWindow::level2()
     ui->Play->show();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vida1));
+        //se evalua si hay dos jugadores para mostrar la vida del segundo personaje
     if(num_jugadores==2){
             ui->Vida2->show();
             ui->Vida2->setText(QString::number(vida2));
     }
+    //se crean variables para leer los archivos que crean las paredes y las monedas
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
-
+    //se le dan valores para el ancho y el alto de la escena
     h_limit = 1000;
     v_limit = 500;
 
-    timer = new QTimer(this);
+    timer = new QTimer(this);//creo Qtimer
     timerenemigo = new QTimer; //creo el Qtimer
     timerenemigo2 = new QTimer; //creo el Qtimer
     timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
-    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 2.png"));
+    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 2.png"));//se añade el fondo del nivel 2
+    //se generan paredes temporales
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
     muro4 = new pared(3,100,-997,-200);
     muro3 = new pared(3,100,0,-200);
-    scene->setSceneRect(0,0,h_limit,v_limit);
+    scene->setSceneRect(0,0,h_limit,v_limit);//se crea un contorno a la escena
 
+    //se le da forma a lo relacionado con el QGraphicsView
     view->show();
     view->setScene(scene);
     ui->centralwidget->adjustSize();
@@ -820,14 +840,16 @@ void MainWindow::level2()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+        //se eliminan las paredes y monedas que puedan quedar del nivel pasado
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
         monedas.removeAt(i);}
-    for(int i=0;i<enemigos.size();i++){ //ciclo que recorre toda la lista de enemigos
+    for(int i=0;i<enemigos.size();i++){ //ciclo que recorre toda la lista de enemigos y los elimina
         enemigos.removeAt(i);
     }
-
+//se crea el jugador o los jugadores
     crear_jugador();
     //enemigo 6
     bola6 = new enemigo(250,-450,512,512); //creo enemigo 1
@@ -863,8 +885,8 @@ void MainWindow::level2()
     bola10->setScale(0.6); //cambiar tamaño
     enemigos.push_back(bola10); //agrego enemigo 4 a la lista de enemigos
     scene->addItem(enemigos.at(4)); //añado enemigo 4 a la escena
-
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords2.txt");
+//se añaden las paredes
+    Leer.open("../juego_solitario/coords2.txt");
     char linea[20];
     Leer.getline(linea, sizeof(linea));
     while (!Leer.eof()) {
@@ -892,8 +914,8 @@ void MainWindow::level2()
         Leer.getline(linea, sizeof(linea));
     }
     Leer.close();
-
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money2.txt");
+//se añaden las monedas
+    Leer.open("../juego_solitario/money2.txt");
     char line[20];
     Leer.getline(line, sizeof(line));
     while (!Leer.eof()) {
@@ -918,7 +940,7 @@ void MainWindow::level2()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-
+//se crean los conects que actualizan los movimientos del jugador y de los enemigos
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
     connect(timerenemigo2,SIGNAL(timeout()),this,SLOT(mover_enemigo2())); //conecto el timer al movimiento del enemigo
@@ -952,28 +974,30 @@ void MainWindow::level3()
     ui->Play->show();
     ui->Puntaje->setText(QString::number(pn));
     ui->Vida->setText(QString::number(vida1));
+    //se evalua si hay dos jugadores para mostrar la vida del segundo personaje
     if(num_jugadores==2){
-            ui->Vida2->show();
-            ui->Vida2->setText(QString::number(vida2));
+        ui->Vida2->show();
+        ui->Vida2->setText(QString::number(vida2));
     }
+    //se crean variables para leer los archivos que crean las paredes y las monedas
     ifstream Leer;
     int ancho1,alto1,posix,posiy,posjx,posjy;
-
+    //se le dan valores para el ancho y el alto de la escena
     h_limit = 1000;
     v_limit = 500;
 
-    timer = new QTimer(this);
+    timer = new QTimer(this);// creo Qtimer
     timerenemigo = new QTimer; //creo el Qtimer
     timerenemigo2 = new QTimer; //creo el Qtimer
     timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
-    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 3.png"));
+    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 3.png"));//le doy el fondo respectivo al nivel 3
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
     muro4 = new pared(3,100,-997,-200);
     muro3 = new pared(3,100,0,-200);
     scene->setSceneRect(0,0,h_limit,v_limit);
-
+// sw crea lo relacionado con el GrapicsView
     view->show();
     view->setScene(scene);
     ui->centralwidget->adjustSize();
@@ -982,6 +1006,7 @@ void MainWindow::level3()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+   //  se eliminan paredes o enemigos que pudieran quedar previamente
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
     for(int i=0;i<monedas.size();i++){
@@ -989,7 +1014,7 @@ void MainWindow::level3()
     for(int i=0;i<enemigos.size();i++){ //ciclo que recorre toda la lista de enemigos
         enemigos.removeAt(i);
     }
-
+// se crea el o los jugadores
     crear_jugador();
     //enemigo 11
     bola11 = new enemigo(25,-200,81,82,30,0); //creo enemigo 11
@@ -1039,8 +1064,8 @@ void MainWindow::level3()
     bola17->setScale(0.1); //cambiar tamaño
     enemigos.push_back(bola17); //agrego enemigo 17 a la lista de enemigos
     scene->addItem(enemigos.at(6)); //añado enemigo 17 a la escena
-
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/coords3.txt");
+// se crean los muros
+    Leer.open("../juego_solitario/coords3.txt");
     char linea[20];
     Leer.getline(linea, sizeof(linea));
     while (!Leer.eof()) {
@@ -1068,8 +1093,8 @@ void MainWindow::level3()
         Leer.getline(linea, sizeof(linea));
     }
     Leer.close();
-
-    Leer.open("/Users/Gabriel Restrepo/Documents/juego_solitario/money3.txt");
+// se crean las monedas
+    Leer.open("../juego_solitario/money3.txt");
     char line[20];
     Leer.getline(line, sizeof(line));
     while (!Leer.eof()) {
@@ -1094,7 +1119,7 @@ void MainWindow::level3()
     scene->addItem(muro2);
     scene->addItem(muro3);
     scene->addItem(muro4);
-
+//se crean los conects que actualizan los movimientos del jugador y de los enemigos
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(3);
     connect(timerenemigo3,SIGNAL(timeout()),this,SLOT(mover_enemigo3())); //conecto el timer al movimiento del enemigo
@@ -1103,6 +1128,7 @@ void MainWindow::level3()
 
 void MainWindow::destructorlevel1()
 {
+    /*en esta funcion se elimina todo lo que pueda dañar el siguiente nivel*/
     delete timer;
     delete timerenemigo;
     delete timerenemigo2;
@@ -1123,6 +1149,7 @@ void MainWindow::destructorlevel1()
 
 void MainWindow::crear_jugador()
 {
+    /*esta funcion se encarga de crear un jugador o dos dependiendo del numero de jugadores*/
     personaje = new cuerpograf;
     personaje->actualizar(v_limit);
     scene->addItem(personaje);
@@ -1140,6 +1167,7 @@ void MainWindow::crear_jugador()
 
 QList<moneda *> MainWindow::eliminarMoneda(QList<moneda *> monedas, int pos)
 {
+    /*esta funcion elimina las monedas tomadas por el jugador */
     QList<moneda *> aux;
     for (int i; i<monedas.size() ;i++ ) {
         if(i!=pos){
@@ -1151,6 +1179,7 @@ QList<moneda *> MainWindow::eliminarMoneda(QList<moneda *> monedas, int pos)
 
 void MainWindow::on_cargarpartida_clicked()
 {
+    /*este boton carga el menu de cargar partida */
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
     ui->un_jugador->hide();
@@ -1167,6 +1196,7 @@ void MainWindow::on_cargarpartida_clicked()
 
 void MainWindow::on_nuevapartida_clicked()
 {
+    /*este boton carga el menu para registrarse*/
     ui->cargarpartida->hide();
     ui->nuevapartida->hide();
     ui->un_jugador->show();
@@ -1182,7 +1212,8 @@ void MainWindow::on_nuevapartida_clicked()
 }
 
 void MainWindow::on_iniciar_clicked()
-{
+{ /*este boton se encarga de verificar si el usuario ingresado es el correcto y carga a el o los
+jugadores en el mundo respectivo con el puntaje respectivo*/
     user=ui->usuario->text();
     contra=ui->contrasena->text();
     if(user==NULL || contra==NULL){
@@ -1218,7 +1249,9 @@ void MainWindow::on_iniciar_clicked()
             leer>>py1_;
             leer>>px2_;
             leer>>py2_;
+            //le da los valores respectivos a las variables
             if(Nnames==user.toStdString()&&clave==contra.toStdString()){
+                //se evalua si se encontro el usuario con su respectiva contraseña
                 encontrado=true;
                 cargado=true;
                 nivel=stoi(nivel_);
@@ -1228,13 +1261,11 @@ void MainWindow::on_iniciar_clicked()
 
             }
             else{
+                //si no se encontro se gusrda el usuario que estaba
                 Temp<<Nnames<<" "<<clave<<" "<<nivel_<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
             }
             leer>>Nnames;
 
-        }
-        if(!encontrado){
-            Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<1<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<py1<<" "<<px2<<" "<<py2<<endl;
         }
         leer.close();
         Temp.close();
@@ -1258,6 +1289,7 @@ void MainWindow::on_iniciar_clicked()
         ui->label_3->hide();
         ui->pushButton->hide();
         ui->buton->hide();
+        //aca se mira en que nivel estaba y se carga con el numero de jugadores correspondientes
         if(nivel==1){level1();}
         if(nivel==2){
 
@@ -1267,7 +1299,7 @@ void MainWindow::on_iniciar_clicked()
 
     }
     else{
-
+        //aca se evalua si el usuario no se encontro y te devuelve al menu de inicio
         QMessageBox msgBox;
         msgBox.setText("Usuario o Contraseña Invalida.");
         msgBox.setWindowTitle("Calabozo Medieval");
@@ -1297,6 +1329,7 @@ void MainWindow::on_iniciar_clicked()
 
 void MainWindow::on_registrar_clicked()
 {
+    //este boton se encarga de registrar los nuevos usuarios si no se encuentran antiguar previamente registrados
 user=ui->usuario->text();
 contra=ui->contrasena->text();
 
@@ -1380,8 +1413,10 @@ contra=ui->contrasena->text();
         remove("../juego_solitario/partidas/Guardar.txt");
         rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
         if(!encontrado){
+            //se empieza en el nivel 1
         level1();
         }else{
+            //si se encuentra un usuario previamente registrado te envia al menu de inicio
             ui->cargarpartida->show();
             ui->nuevapartida->show();
             ui->un_jugador->hide();
@@ -1404,6 +1439,7 @@ contra=ui->contrasena->text();
 
 void MainWindow::on_volver_clicked()
 {
+    //al hundir este boton se devuelve al menu de inicio
     ui->cargarpartida->show();
     ui->nuevapartida->show();
     ui->un_jugador->hide();
@@ -1420,12 +1456,14 @@ void MainWindow::on_volver_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
+    //este boton se encarga de salir de la ventana
     this->close();
 }
 
 
 void MainWindow::on_Play_clicked()
 {
+    //este boton se encarga de reanudar la partida
     timer->start(3);
     timerenemigo->start(12);
     timerenemigo2->start(12);
@@ -1436,6 +1474,7 @@ void MainWindow::on_Play_clicked()
 
 void MainWindow::on_Pausa_clicked()
 {
+    //este boton se encarga de pausar el juego
     timer->stop();
     timerenemigo->stop();
     timerenemigo2->stop();
@@ -1447,7 +1486,7 @@ void MainWindow::on_Pausa_clicked()
 
 void MainWindow::on_actionGuardar_triggered()
 {
-
+//este boton se encarga de borrar el usuario antiguo y guardarlo con los nuevos datos del usuario
         string Nnames,clave,nivel_,punaje_,cantjugadores,px1_,px2_,py1_,py2_;
 
         ifstream leer;
@@ -1497,6 +1536,7 @@ void MainWindow::on_actionGuardar_triggered()
 
 void MainWindow::on_actionReiniciar_triggered()
 {
+ //   este boton se encarga de reiniciar todo lo obtenido o perdido
     switch (nivel) {
     case 1:
         destructorlevel1();
@@ -1507,14 +1547,14 @@ void MainWindow::on_actionReiniciar_triggered()
         break;
     case 2:
         destructorlevel1();
-        pn=0;
+        pn=28;
         vida1=10;
         vida2=10;
         level2();
         break;
     case 3:
         destructorlevel1();
-        pn=0;
+        pn=34;
         vida1=10;
         vida2=10;
         level3();
@@ -1525,7 +1565,7 @@ void MainWindow::on_actionReiniciar_triggered()
 
 void MainWindow::on_actionEliminar_triggered()
 {
-
+    //este boton se encarga de eliminar el usuario activo
     string Nnames,clave,nivel_,punaje_,cantjugadores,px1_,px2_,py1_,py2_;
 
     ifstream leer;
@@ -1577,6 +1617,7 @@ void MainWindow::on_actionEliminar_triggered()
 
 void MainWindow::on_actionControles_triggered()
 {
+    //este boton se encarga de mostrar los controles
     timer->stop();
     timerenemigo->stop();
     timerenemigo2->stop();
@@ -1594,6 +1635,7 @@ void MainWindow::on_actionControles_triggered()
 
 void MainWindow::on_actionInstrucciones_triggered()
 {
+    //este control se encarga de mostrar las instrucciones
     timer->stop();
     timerenemigo->stop();
     timerenemigo2->stop();

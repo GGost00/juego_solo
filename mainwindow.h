@@ -78,16 +78,16 @@ private:
     QTimer *timerenemigo2; //timer de los enemigos
     QTimer *timerenemigo3; //timer de los enemigos
     QGraphicsScene *scene;// se crea la escena
-    int h_limit;
-    int v_limit;
-    void borderCollision2(cuerpo *b,cuerpo *d);
-    void borderCollision(cuerpo *b);
-    void keyPressEvent(QKeyEvent *event);
-    void level1();
-    void level2();
-    void level3();
-    void destructorlevel1();
-    void crear_jugador();
+    int h_limit;//tamaño de la escena
+    int v_limit;//tamaño de la escena
+    void borderCollision2(cuerpo *b,cuerpo *d);//funcion de colicion para dos jugadores
+    void borderCollision(cuerpo *b);//fincion de colicion para un jugador
+    void keyPressEvent(QKeyEvent *event);//funcion que detecta si se presiona una tecla
+    void level1();//funcion que ejecuta el nivel 1
+    void level2();//funcion que ejecuta el nivel 2
+    void level3();//funcion que ejecuta el nivel 3
+    void destructorlevel1();//funcion que destruye objetos de los niveles
+    void crear_jugador();//funcion que crea el o los jugadores
 
     //personajes
     cuerpograf * personaje;
@@ -113,7 +113,7 @@ private:
     enemigo *bola15;
     enemigo *bola16;
     enemigo *bola17;
-   //muros de teletransporte
+   //muros de teletransporte no se usan
     pared *muro1;
     pared *muro2;
     pared *muro3;

@@ -3,24 +3,23 @@
 #include <QGraphicsItem>
 #include <QPainter>
 
-class moneda: public QGraphicsItem
+class moneda: public QGraphicsItem //ereda funciones del QGraphicsItem
 {
 
-    int r=10;
-    int posx, posy;
-    int velocidad = 5;
+    int r=10;//radio de la esfera
+    int posx, posy;//posicion de la esfera
 
 public:
-    moneda( int x, int y);
+    moneda( int x, int y); //constructor de la moneda
 
-    int getR() const;
-    void setR(int radio);
-    int getPosx() const;
-    void setPosx(int px);
-    int getPosy() const;
-    void setPosy(int py);
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+    int getR() const;//funcion que devuelve el radio
+    void setR(int radio);//funcion que le da valor al radio
+    int getPosx() const;//funcion que devuelve la posicion x
+    void setPosx(int px);//funcion que le da valor a la posicion x
+    int getPosy() const;//funcion que devuelve la posicion y
+    void setPosy(int py);//funcion que le da valor a la posicion y
+    QRectF boundingRect() const;//funcion que dibuja
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);//funcion que pinta
 
 };
 
