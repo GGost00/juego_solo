@@ -853,6 +853,7 @@ void MainWindow::level2()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setStyleSheet("background-color:#242400;");
 
         //se eliminan las paredes y monedas que puedan quedar del nivel pasado
     for(int i=0;i<paredes.size();i++){
@@ -1019,6 +1020,7 @@ void MainWindow::level3()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setStyleSheet("background-color:#242400;");
    //  se eliminan paredes o enemigos que pudieran quedar previamente
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
