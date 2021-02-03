@@ -11,7 +11,7 @@ int num_jugadores;
 QString user,contra,posiciones;
 int puntaje=0;
 int pn=0;
-int vida1=5,vida2=5;
+int vida1=10,vida2=10;
 int px1=32,py1=150,px2=32,py2=150;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->contrasena->hide();
     ui->Pausa->hide();
     ui->Play->hide();
+    ui->control->hide();
     view->hide();
 
     ui->Puntaje->setText(QString::number(pn));
@@ -94,7 +95,7 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
           vida1-=1;
           ui->Vida->setText(QString::number(vida1));
         }}
-    if(vida1<0){
+    if(vida1<=0){
 
          timer->stop();
         QString txt;
@@ -125,7 +126,7 @@ void MainWindow::borderCollision2(cuerpo *b,cuerpo *d)
               vida2-=1;
               ui->Vida2->setText(QString::number(vida2));
             }}
-        if(vida2<0){
+        if(vida2<=0){
 
              timer->stop();
             QString txt;
@@ -176,7 +177,7 @@ void MainWindow::borderCollision(cuerpo *b)
             }}
     }
 
-    if(vida1<0){
+    if(vida1<=0){
 
          timer->stop();
         QString txt;
@@ -300,13 +301,13 @@ void MainWindow::mover_enemigo3()
 
         if(i==2) //condicion que pregunta si es el tercer enemigo
         {
-            enemigos.at(i)->MCU(250,275,100,-1.5,0); //darle movimiento circular uniforme
+            enemigos.at(i)->MCU(250,175,100,-1.5,0); //darle movimiento circular uniforme
 
         }
 
         if(i==3) //condicion que pregunta si es el cuarto enemigo
         {
-            enemigos.at(i)->MCU(750,275,100,-1.5,-3.1416); //darle el omvimiento circular uniforme
+            enemigos.at(i)->MCU(750,175,100,-1.5,-3.1416); //darle el omvimiento circular uniforme
 
         }
 
@@ -350,11 +351,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
+            vida1+=3;
+            vida2+=3;
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
+            vida1+=3;
+            vida2+=3;
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -385,13 +390,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
-
+            vida1+=3;
+            vida2+=3;
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
-
+            vida1+=3;
+            vida2+=3;
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -423,13 +430,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(monedas.size()==NULL && nivel==1){
             destructorlevel1();
             nivel+=1;
-
+            vida1+=3;
+            vida2+=3;
             level2();
         }
         if(monedas.size()==NULL && nivel==2){
             destructorlevel1();
             nivel+=1;
-
+            vida1+=3;
+            vida2+=3;
             level3();
         }
         if(monedas.size()==NULL && nivel==3){
@@ -471,13 +480,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
                 nivel+=1;
-
+                vida1+=3;
+                vida2+=3;
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
                 nivel+=1;
-
+                vida1+=3;
+                vida2+=3;
                 level3();
             }
             if(monedas.size()==NULL && nivel==3){
@@ -508,12 +519,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
                 nivel+=1;
-
+                vida1+=3;
+                vida2+=3;
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
-
+                vida1+=3;
+                vida2+=3;
                 nivel+=1;
                 level3();
             }
@@ -544,13 +557,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }
             if(monedas.size()==NULL && nivel==1){
                 destructorlevel1();
-
+                vida1+=3;
+                vida2+=3;
                 nivel+=1;
                 level2();
             }
             if(monedas.size()==NULL && nivel==2){
                 destructorlevel1();
-
+                vida1+=3;
+                vida2+=3;
                 nivel+=1;
                 level3();
             }
@@ -627,6 +642,7 @@ void MainWindow::level1()
     timerenemigo2 = new QTimer; //creo el Qtimer
     timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
+    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 1.png"));
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
     muro4 = new pared(3,100,-997,-200);
@@ -789,6 +805,7 @@ void MainWindow::level2()
     timerenemigo2 = new QTimer; //creo el Qtimer
     timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
+    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 2.png"));
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
     muro4 = new pared(3,100,-997,-200);
@@ -950,6 +967,7 @@ void MainWindow::level3()
     timerenemigo2 = new QTimer; //creo el Qtimer
     timerenemigo3 = new QTimer; //creo el Qtimer
     scene = new QGraphicsScene(this);
+    scene->addPixmap(QPixmap(":/recursos/imagenes/nivel 3.png"));
     muro1 = new pared(3,100,-997,-400);
     muro2 = new pared(3,100,0,-400);
     muro4 = new pared(3,100,-997,-200);
@@ -1241,13 +1259,11 @@ void MainWindow::on_iniciar_clicked()
         ui->pushButton->hide();
         ui->buton->hide();
         if(nivel==1){level1();}
-         if(nivel==2){
-             vida1=250;
-             vida2=250;
-             level2();}
-         if(nivel==3){
-             vida1=250;
-             vida2=250;level3();}
+        if(nivel==2){
+
+            level2();}
+        if(nivel==3){
+            level3();}
 
     }
     else{
@@ -1338,7 +1354,16 @@ contra=ui->contrasena->text();
             leer>>py2_;
             if(Nnames==user.toStdString()&&clave==contra.toStdString()){
                 encontrado=true;
-                Temp<<user.toStdString()<<" "<<contra.toStdString()<<" "<<nivel<<" "<<pn<<" "<<num_jugadores<<" "<<px1<<" "<<py1<<" "<<px2<<" "<<py2<<endl;
+                QMessageBox msgBox;
+                msgBox.setText("Usuario existente.");
+                msgBox.setWindowTitle("Calabozo Medieval");
+                msgBox.setWindowIcon(QIcon(":/recursos/imagenes/imagen.png"));
+                msgBox.setStyleSheet("background-color:#211b18;"
+                                     "color:white;");
+                msgBox.exec();
+                ui->usuario->clear();
+                ui->contrasena->clear();
+                ui->buton->setChecked(true);
             }
             else{
                 Temp<<Nnames<<" "<<clave<<" "<<nivel_<<" "<<punaje_<<" "<<cantjugadores<<" "<<px1_<<" "<<py1_<<" "<<px2_<<" "<<py2_<<endl;
@@ -1354,7 +1379,25 @@ contra=ui->contrasena->text();
         Guardar.close();
         remove("../juego_solitario/partidas/Guardar.txt");
         rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+        if(!encontrado){
         level1();
+        }else{
+            ui->cargarpartida->show();
+            ui->nuevapartida->show();
+            ui->un_jugador->hide();
+            ui->dos_jugadores->hide();
+            ui->registrar->hide();
+            ui->iniciar->hide();
+            ui->volver->hide();
+            ui->label->hide();
+            ui->label_2->hide();
+            ui->usuario->hide();
+            ui->contrasena->hide();
+            ui->pushButton->show();
+            ui->label_3->show();
+            ui->label_4->show();
+        }
+
     }
 
 }
@@ -1372,7 +1415,7 @@ void MainWindow::on_volver_clicked()
     ui->label_2->hide();
     ui->usuario->hide();
     ui->contrasena->hide();
-
+    ui->pushButton->show();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -1457,23 +1500,23 @@ void MainWindow::on_actionReiniciar_triggered()
     switch (nivel) {
     case 1:
         destructorlevel1();
-        vida1=500;
-        vida2=500;
         pn=0;
+        vida1=10;
+        vida2=10;
         level1();
         break;
     case 2:
         destructorlevel1();
-        vida1=250;
-        vida2=250;
         pn=0;
+        vida1=10;
+        vida2=10;
         level2();
         break;
     case 3:
         destructorlevel1();
-        vida1=250;
-        vida2=250;
         pn=0;
+        vida1=10;
+        vida2=10;
         level3();
         break;
 
@@ -1538,17 +1581,11 @@ void MainWindow::on_actionControles_triggered()
     timerenemigo->stop();
     timerenemigo2->stop();
     timerenemigo3->stop();
+    ui->control->show();
     QString txt;
-    txt="para poder ver las propiedades de los planetas \n"
-        "las cuales son:\n"
-        "- Posicion (x,y)\n"
-        "- Velocidad (x,y)\n"
-        "- Aceleracion (x,y)\n"
-        "Seleccione la opcion de planetas y seleccione\n"
-        "el planeta al cual le desea ver las propiedades,\n"
-        "estas cualidades saldran en la parde abajo  las\n"
-        "cuales podra ver de una manera facil y sencilla.\n";
-    QMessageBox::about(this,"Instrucciones",txt);
+    txt="";
+    QMessageBox::about(this,"Controles",txt);
+    ui->control->hide();
     timer->start(3);
     timerenemigo->start(12);
     timerenemigo2->start(12);
@@ -1562,15 +1599,13 @@ void MainWindow::on_actionInstrucciones_triggered()
     timerenemigo2->stop();
     timerenemigo3->stop();
     QString txt;
-    txt="para poder ver las propiedades de los planetas \n"
-        "las cuales son:\n"
-        "- Posicion (x,y)\n"
-        "- Velocidad (x,y)\n"
-        "- Aceleracion (x,y)\n"
-        "Seleccione la opcion de planetas y seleccione\n"
-        "el planeta al cual le desea ver las propiedades,\n"
-        "estas cualidades saldran en la parde abajo  las\n"
-        "cuales podra ver de una manera facil y sencilla.\n";
+    txt="la idea es lograr evadir a los enemigos\n"
+        "y conseguir todas las monedas en los mundos\n"
+        "la obtencion de las monedas en casa nivel es\n"
+        "mas dificil por eso se te otorgan dos vidas mas \n"
+        "por cada nivel que pases, asi que te sugiero \n"
+        "¡cuida muy bien tus VIDAS!\n"
+        "<3";
     QMessageBox::about(this,"Instrucciones",txt);
     timer->start(3);
     timerenemigo->start(12);

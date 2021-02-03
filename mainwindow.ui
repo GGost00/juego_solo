@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
+    <width>456</width>
     <height>528</height>
    </rect>
   </property>
@@ -352,6 +352,23 @@
      <string>TextLabel</string>
     </property>
    </widget>
+   <widget class="QLabel" name="control">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>40</y>
+      <width>501</width>
+      <height>301</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="recursos.qrc">:/recursos/imagenes/controles.png</pixmap>
+    </property>
+   </widget>
+   <zorder>control</zorder>
    <zorder>label_4</zorder>
    <zorder>dos_jugadores</zorder>
    <zorder>nuevapartida</zorder>
@@ -380,7 +397,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>465</width>
+     <width>456</width>
      <height>26</height>
     </rect>
    </property>
