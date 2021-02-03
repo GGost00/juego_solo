@@ -372,7 +372,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
              timer->stop();
             QString txt;
-            txt="Felicidades has recuperado el tesoro";
+            txt="☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\n"
+                "Felicidades has recuperado el tesoro\n"
+                "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆";
             QMessageBox::about(this,"¡FELICIDADES!",txt);
 
         }
@@ -412,7 +414,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             timer->stop();
             QString txt;
-            txt="Felicidades has recuperado el tesoro";
+            txt="☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\n"
+                "Felicidades has recuperado el tesoro\n"
+                "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆";
             QMessageBox::about(this,"¡FELICIDADES!",txt);
 
         }
@@ -453,7 +457,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             timer->stop();
             QString txt;
-            txt="Felicidades has recuperado el tesoro";
+            txt="☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\n"
+                "Felicidades has recuperado el tesoro\n"
+                "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆";
             QMessageBox::about(this,"¡FELICIDADES!",txt);
 
         }
@@ -504,7 +510,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
                  timer->stop();
                 QString txt;
-                txt="Felicidades has recuperado el tesoro";
+                txt="☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\n"
+                    "Felicidades han recuperado el tesoro\n"
+                    "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆";
                 QMessageBox::about(this,"¡FELICIDADES!",txt);
 
             }
@@ -543,7 +551,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==3){
                 timer->stop();
                 QString txt;
-                txt="Felicidades has recuperado el tesoro";
+                txt="☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\n"
+                    "Felicidades han recuperado el tesoro\n"
+                    "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆";
                 QMessageBox::about(this,"¡FELICIDADES!",txt);
 
             }
@@ -582,7 +592,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(monedas.size()==NULL && nivel==3){
                 timer->stop();
                 QString txt;
-                txt="Felicidades has recuperado el tesoro";
+                txt="☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\n"
+                    "Felicidades han recuperado el tesoro\n"
+                    "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆";
                 QMessageBox::about(this,"¡FELICIDADES!",txt);
 
             }
@@ -676,6 +688,7 @@ void MainWindow::level1()
     this->resize(view->width(),view->height());
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setStyleSheet("background-color:#242400;");
     //se eliminan las paredes y monedas que puedan quedar del nivel pasado
     for(int i=0;i<paredes.size();i++){
         paredes.removeAt(i);}
