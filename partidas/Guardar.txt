@@ -1,5 +1,6 @@
 juan perez 1 34 2 209 122 20 20
 gabo ll 1 0 1 32 150 32 150
 yeni lorena 1 0 2 32 150 32 150
-gabriel restrepo 3 0 1 32 150 32 150
 ll ll 1 0 2 32 150 32 150
+gabriel kk 3 64 1 31 20 32 150
+gabriel restrepo 1 0 2 32 150 32 150

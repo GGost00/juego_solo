@@ -1250,9 +1250,9 @@ jugadores en el mundo respectivo con el puntaje respectivo*/
 
         ifstream leer;
         ofstream Temp,Guardar;
-        Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-        leer.open("../juego_solitario/partidas/Guardar.txt");
-        Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+        Guardar.open("Guardar.txt",ios::app);
+        leer.open("Guardar.txt");
+        Temp.open("temp.txt",ios::app);
         bool encontrado =false;
         leer>>Nnames;
         while (!leer.eof()) {
@@ -1285,8 +1285,8 @@ jugadores en el mundo respectivo con el puntaje respectivo*/
         leer.close();
         Temp.close();
         Guardar.close();
-        remove("../juego_solitario/partidas/Guardar.txt");
-        rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+        remove("Guardar.txt");
+        rename("temp.txt","Guardar.txt");
     }
     if (cargado==true){
         ui->cargarpartida->hide();
@@ -1386,9 +1386,9 @@ contra=ui->contrasena->text();
 
         ifstream leer;
         ofstream Temp,Guardar;
-        Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-        leer.open("../juego_solitario/partidas/Guardar.txt");
-        Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+        Guardar.open("Guardar.txt",ios::app);
+        leer.open("Guardar.txt");
+        Temp.open("temp.txt",ios::app);
         bool encontrado =false;
         leer>>Nnames;
         while (!leer.eof()) {
@@ -1425,8 +1425,8 @@ contra=ui->contrasena->text();
         leer.close();
         Temp.close();
         Guardar.close();
-        remove("../juego_solitario/partidas/Guardar.txt");
-        rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+        remove("Guardar.txt");
+        rename("temp.txt","Guardar.txt");
         if(!encontrado){
             //se empieza en el nivel 1
         level1();
@@ -1506,9 +1506,9 @@ void MainWindow::on_actionGuardar_triggered()
 
         ifstream leer;
         ofstream Temp,Guardar;
-        Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-        leer.open("../juego_solitario/partidas/Guardar.txt");
-        Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+        Guardar.open("Guardar.txt",ios::app);
+        leer.open("Guardar.txt");
+        Temp.open("temp.txt",ios::app);
         bool encontrado =false;
         leer>>Nnames;
         while (!leer.eof()) {
@@ -1536,8 +1536,8 @@ void MainWindow::on_actionGuardar_triggered()
         leer.close();
         Temp.close();
         Guardar.close();
-        remove("../juego_solitario/partidas/Guardar.txt");
-        rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+        remove("Guardar.txt");
+        rename("temp.txt","Guardar.txt");
 
 
     QMessageBox msgBox;
@@ -1585,9 +1585,9 @@ void MainWindow::on_actionEliminar_triggered()
 
     ifstream leer;
     ofstream Temp,Guardar;
-    Guardar.open("../juego_solitario/partidas/Guardar.txt",ios::app);
-    leer.open("../juego_solitario/partidas/Guardar.txt");
-    Temp.open("../juego_solitario/partidas/temp.txt",ios::app);
+    Guardar.open("Guardar.txt",ios::app);
+    leer.open("Guardar.txt");
+    Temp.open("temp.txt",ios::app);
     bool encontrado =false;
     leer>>Nnames;
     while (!leer.eof()) {
@@ -1614,8 +1614,8 @@ void MainWindow::on_actionEliminar_triggered()
     leer.close();
     Temp.close();
     Guardar.close();
-    remove("../juego_solitario/partidas/Guardar.txt");
-    rename("../juego_solitario/partidas/temp.txt","../juego_solitario/partidas/Guardar.txt");
+    remove("Guardar.txt");
+    rename("temp.txt","Guardar.txt");
 
 
     QMessageBox msgBox;
